@@ -8,6 +8,7 @@ import { NoSqlModule } from './configurations/database/no-sql/no-sql.module';
 import { NoSqlService } from './configurations/database/no-sql/no-sql.service';
 import { ApplicationModule } from './configurations/application/application.module';
 import { ApplicationService } from './configurations/application/application.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ApplicationService } from './configurations/application/application.ser
       }),
       inject: [ApplicationService],
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
