@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
@@ -25,7 +25,7 @@ export class CommunitiesController {
     return this.communitiesService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id', ParseMongoIdPipe) id: string, @Body() updateCommunityDto: UpdateCommunityDto) {
     return this.communitiesService.update(id, updateCommunityDto);
   }
