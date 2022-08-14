@@ -9,6 +9,7 @@ import { NoSqlService } from './configurations/database/no-sql/no-sql.service';
 import { ApplicationModule } from './configurations/application/application.module';
 import { ApplicationService } from './configurations/application/application.service';
 import { UsersModule } from './users/users.module';
+import { CommunitiesModule } from './communities/communities.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module';
       inject: [ApplicationService],
     }),
     UsersModule,
+    CommunitiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

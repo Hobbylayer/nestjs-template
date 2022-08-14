@@ -2,7 +2,7 @@ import { Document, Types } from 'mongoose'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 
 @Schema({ timestamps: true })
-export class User extends Document {
+export class Community extends Document {
 
     @Prop({ required: true })
     name: string;
@@ -26,4 +26,4 @@ export class User extends Document {
     owner: Types.ObjectId;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const CommunitySchema = SchemaFactory.createForClass(Community);
