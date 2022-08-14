@@ -1,4 +1,4 @@
-import { Document, Types } from 'mongoose'
+import { Document } from 'mongoose'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 
 @Schema({ timestamps: true })
@@ -25,8 +25,13 @@ export class Community extends Document {
     @Prop({ default: 'USD' })
     currenc: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'User' })
-    owner: Types.ObjectId;
+    @Prop({ required: true })
+    owner: string;
+
+    @Prop({ default: 'active' })
+    active: string;
+
+    //TODO add createdBy and updatedBy
 }
 
 export const CommunitySchema = SchemaFactory.createForClass(Community);
