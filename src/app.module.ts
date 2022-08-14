@@ -10,6 +10,7 @@ import { ApplicationModule } from './configurations/application/application.modu
 import { ApplicationService } from './configurations/application/application.service';
 import { UsersModule } from './users/users.module';
 import { CommunitiesModule } from './communities/communities.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CommunitiesModule } from './communities/communities.module';
     }),
     UsersModule,
     CommunitiesModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
