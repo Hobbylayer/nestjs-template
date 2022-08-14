@@ -10,7 +10,6 @@ import {
     MinLength,
 } from 'class-validator';
 
-
 enum StatusCommunity {
     active = 'active',
     inactive = 'inactive',

@@ -29,7 +29,7 @@ export class Community extends Document {
     owner: string;
 
     @Prop({ default: 'active' })
-    active: string;
+    status: string;
 
     //TODO add createdBy and updatedBy
 }
