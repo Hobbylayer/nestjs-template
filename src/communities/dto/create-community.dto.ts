@@ -9,11 +9,9 @@ import {
     Min,
     MinLength,
 } from 'class-validator';
+import { StatusCommunity } from '../enums/communities.enums';
 
-enum StatusCommunity {
-    active = 'active',
-    inactive = 'inactive',
-}
+
 
 export class CreateCommunityDto {
     @IsString()

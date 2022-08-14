@@ -1,5 +1,6 @@
 import { Document, Types } from 'mongoose'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Roles, StatusUser } from '../enums/users.enums';
 
 
 @Schema({ timestamps: true })
@@ -9,7 +10,7 @@ export class User extends Document {
     name: string;
 
     @Prop()
-    lasName: string;
+    lastName: string;
 
     @Prop()
     phone: string;
@@ -20,14 +21,14 @@ export class User extends Document {
     @Prop({ type: String, unique: true })
     dni: string;
 
-    @Prop()
+    @Prop({ select: false })
     password: string;
 
-    @Prop()
-    status: string;
+    @Prop({ type: String, enum: StatusUser, default: StatusUser.ACTIVE })
+    status: StatusUser;
 
-    @Prop()
-    role: string[];
+    @Prop({ type: Array, enum: Roles, default: Roles.RESIDENT })
+    roles: Roles[];
 
     @Prop()
     urlAvatar: string;
