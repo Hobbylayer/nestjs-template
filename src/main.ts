@@ -19,13 +19,18 @@ async function bootstrap() {
   const port = configService.get('PORT');
   const logger = new Logger();
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api/v1');
   app.enableVersioning({
     type: VersioningType.URI,
   });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true
+      }
     }),
   );
   app.use(compression());
