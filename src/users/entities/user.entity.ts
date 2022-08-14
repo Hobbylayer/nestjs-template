@@ -1,29 +1,39 @@
 import { Document, Types } from 'mongoose'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 
+
 @Schema({ timestamps: true })
 export class User extends Document {
 
     @Prop({ required: true })
     name: string;
 
-    @Prop({ required: true })
-    city: string;
+    @Prop()
+    lasName: string;
 
-    @Prop({ type: String })
+    @Prop()
     phone: string;
 
     @Prop({ unique: true })
     email: string;
 
     @Prop({ type: String, unique: true })
-    rif: string;
+    dni: string;
 
-    @Prop({ default: 1 })
-    exchangeRate: number;
+    @Prop()
+    password: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'User' })
-    owner: Types.ObjectId;
+    @Prop()
+    status: string;
+
+    @Prop()
+    role: string[];
+
+    @Prop()
+    urlAvatar: string;
+
+    @Prop({ type: Types.ObjectId, ref: 'Community' })
+    community: Types.ObjectId;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
