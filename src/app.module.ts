@@ -11,6 +11,7 @@ import { ApplicationService } from './configurations/application/application.ser
 import { UsersModule } from './users/users.module';
 import { CommunitiesModule } from './communities/communities.module';
 import { PaymentsModule } from './payments/payments.module';
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PaymentsModule } from './payments/payments.module';
     UsersModule,
     CommunitiesModule,
     PaymentsModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
