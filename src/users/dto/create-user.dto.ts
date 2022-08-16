@@ -1,6 +1,6 @@
 import { IsArray, IsEmail, IsEnum, IsMongoId, IsOptional, IsPhoneNumber, IsString, IsUrl, MaxLength, MinLength } from "class-validator";
 import { Types } from "mongoose";
-import { Roles, StatusUser } from "../enums/users.enums";
+import { Roles, UserStatus } from "../enums/users.enums";
 
 
 
@@ -33,9 +33,9 @@ export class CreateUserDto {
     readonly password: string;
 
     @IsString()
-    @IsEnum(StatusUser)
+    @IsEnum(UserStatus)
     @IsOptional()
-    readonly status: StatusUser;
+    readonly status: UserStatus;
 
     @IsArray()
     @IsEnum(Roles, { each: true })
