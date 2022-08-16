@@ -36,7 +36,6 @@ export class User extends Document {
     @Prop({ type: Types.ObjectId, ref: 'Community' })
     community: Types.ObjectId;
 
-    //TODO move to locations collection and add a refence
     @Prop({ type: Types.ObjectId, ref: 'Location' })
     location: string;
 

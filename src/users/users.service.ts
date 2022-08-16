@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt'
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { StatusUser } from './enums/users.enums';
+import { UserStatus } from './enums/users.enums';
 
 @Injectable()
 export class UsersService {
@@ -54,14 +54,14 @@ export class UsersService {
   }
 
   async activate(id: string) {
-    await this.userModel.findByIdAndUpdate(id, { status: StatusUser.ACTIVE })
+    await this.userModel.findByIdAndUpdate(id, { status: UserStatus.ACTIVE })
     return {
       message: 'User activated successfully'
     }
   }
 
   async disable(id: String) {
-    await this.userModel.findByIdAndUpdate(id, { status: StatusUser.DISABLED })
+    await this.userModel.findByIdAndUpdate(id, { status: UserStatus.DISABLED })
     return {
       message: 'User disable successfully'
     }
