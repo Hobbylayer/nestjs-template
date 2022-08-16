@@ -1,6 +1,6 @@
 import { Document, Types } from 'mongoose'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { KindPayment, PaymentStatus, Paymethod } from '../enums/enums.payments';
+import { KindPayment, PaymentStatus } from '../enums/enums.payments';
 
 @Schema({ timestamps: true })
 export class Payment extends Document {
@@ -10,13 +10,10 @@ export class Payment extends Document {
     date: string;
 
     @Prop({ type: String, required: true })
-    code: string;
+    number: string;
 
     @Prop({ type: String, default: KindPayment.INCOME, enum: KindPayment })
     kind: KindPayment;
-
-    @Prop({ type: String, default: Paymethod.CASH, enum: Paymethod })
-    paymethod: Paymethod;
 
     @Prop({ type: String })
     description: string;
@@ -25,9 +22,9 @@ export class Payment extends Document {
     createdBy: string;
 
     @Prop({ type: Types.ObjectId, ref: 'User' })
-    client: Types.ObjectId;
+    resident: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId })
+    @Prop({ type: Types.ObjectId, ref: 'Bank' })
     bank: Types.ObjectId;
 
     @Prop({ type: String, default: 'USD' })
@@ -39,14 +36,14 @@ export class Payment extends Document {
     @Prop({ type: String })
     referenceCode: string;
 
-    @Prop({ type: String })
-    paymethodName: string;
-
-    @Prop({ type: String, enum: PaymentStatus })
+    @Prop({ type: String, enum: PaymentStatus, default: PaymentStatus.PENDING })
     status: PaymentStatus
 
     @Prop({ type: Types.ObjectId, ref: 'Community', required: true })
     community: Types.ObjectId;
+
+    @Prop()
+    residenceNumber: string;
 
     @Prop()
     concept: string;
