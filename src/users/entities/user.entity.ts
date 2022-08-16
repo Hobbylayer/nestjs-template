@@ -1,6 +1,6 @@
 import { Document, Types } from 'mongoose'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Roles, StatusUser } from '../enums/users.enums';
+import { Roles, UserStatus } from '../enums/users.enums';
 
 
 @Schema({ timestamps: true })
@@ -24,8 +24,8 @@ export class User extends Document {
     @Prop({ select: false })
     password: string;
 
-    @Prop({ type: String, enum: StatusUser, default: StatusUser.ACTIVE })
-    status: StatusUser;
+    @Prop({ type: String, enum: UserStatus, default: UserStatus.ACTIVE })
+    status: UserStatus;
 
     @Prop({ type: Array, enum: Roles, default: Roles.RESIDENT })
     roles: Roles[];
