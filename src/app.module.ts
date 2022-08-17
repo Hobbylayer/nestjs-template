@@ -12,6 +12,8 @@ import { UsersModule } from './users/users.module';
 import { CommunitiesModule } from './communities/communities.module';
 import { PaymentsModule } from './payments/payments.module';
 import { LocationModule } from './location/location.module';
+import { PaymentsRequestsModule } from './payments-requests/payments-requests.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { LocationModule } from './location/location.module';
     CommunitiesModule,
     PaymentsModule,
     LocationModule,
+    PaymentsRequestsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
