@@ -23,7 +23,7 @@ export class Community extends Document {
     exchangeRate: number;
 
     @Prop({ default: 'USD' })
-    currenc: string;
+    currency: string;
 
     @Prop({ required: true })
     owner: string;
