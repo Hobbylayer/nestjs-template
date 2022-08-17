@@ -5,7 +5,6 @@ import { KindPayment, PaymentStatus } from '../enums/enums.payments';
 @Schema({ timestamps: true })
 export class Payment extends Document {
 
-
     @Prop({ type: Date, required: true })
     paymentDate: string;
 
@@ -44,6 +43,9 @@ export class Payment extends Document {
 
     @Prop({ type: Types.ObjectId, ref: 'Location', required: true })
     location: Types.ObjectId;
+
+    @Prop({ type: Types.ObjectId, ref: 'PaymentRequest' })
+    paymentRequest: Types.ObjectId;
 
     @Prop({ required: true })
     concept: string;
