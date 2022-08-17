@@ -5,12 +5,11 @@ import { LocationsStatus } from '../enums/locations.enums';
 @Schema({ timestamps: true })
 export class Location extends Document {
 
-
     @Prop({ enum: LocationsStatus, default: LocationsStatus.ACTIVE })
     status: LocationsStatus;
 
     @Prop({ required: true })
-    address: string;
+    name: string;
 
     @Prop({ required: true, ref: 'Community' })
     community: string;
