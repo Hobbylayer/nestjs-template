@@ -37,7 +37,7 @@ export class User extends Document {
     community: Types.ObjectId;
 
     @Prop({ type: Types.ObjectId, ref: 'Location' })
-    location: string;
+    location: Types.ObjectId;
 
 }
 

@@ -7,7 +7,7 @@ export class Payment extends Document {
 
 
     @Prop({ type: Date, required: true })
-    date: string;
+    paymentDate: string;
 
     @Prop({ type: String, required: true })
     number: string;
@@ -42,10 +42,10 @@ export class Payment extends Document {
     @Prop({ type: Types.ObjectId, ref: 'Community', required: true })
     community: Types.ObjectId;
 
-    @Prop()
-    residenceNumber: string;
+    @Prop({ type: Types.ObjectId, ref: 'Location', required: true })
+    location: Types.ObjectId;
 
-    @Prop()
+    @Prop({ required: true })
     concept: string;
 }
 
