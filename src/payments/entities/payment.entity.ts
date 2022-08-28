@@ -1,27 +1,43 @@
 import { Document, Types } from 'mongoose'
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { KindPayment, PaymentStatus } from '../enums/enums.payments';
+import {
+    Prop,
+    Schema,
+    SchemaFactory
+} from '@nestjs/mongoose'
+import { KindPayment, PaymentStatus, Paymethod } from '../enums/enums.payments';
+import { PaymentConcept } from 'src/common/enums/common.enums';
 
 @Schema({ timestamps: true })
 export class Payment extends Document {
 
     @Prop({ type: Date, required: true })
-    paymentDate: string;
+    date: Date;
 
     @Prop({ type: String, required: true })
     number: string;
 
-    @Prop({ type: String, default: KindPayment.INCOME, enum: KindPayment })
+    @Prop({
+        type: String,
+        default: KindPayment.INCOME,
+        enum: KindPayment
+    })
     kind: KindPayment;
+
+    @Prop({
+        type: String,
+        default: Paymethod.CASH,
+        enum: Paymethod
+    })
+    paymethod: Paymethod
 
     @Prop({ type: String })
     description: string;
 
     @Prop({ type: Types.ObjectId, ref: 'User' })
-    createdBy: string;
-
-    @Prop({ type: Types.ObjectId, ref: 'User' })
     resident: Types.ObjectId;
+
+    @Prop({ type: Types.ObjectId, ref: 'Location', required: true })
+    location: Types.ObjectId;
 
     @Prop({ type: Types.ObjectId, ref: 'Bank' })
     bank: Types.ObjectId;
@@ -41,14 +57,28 @@ export class Payment extends Document {
     @Prop({ type: Types.ObjectId, required: true })
     community: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId, ref: 'Location', required: true })
-    location: Types.ObjectId;
-
     @Prop({ type: Types.ObjectId })
     paymentRequest: Types.ObjectId;
 
-    @Prop({ required: true })
-    concept: string;
+
+    @Prop({
+        required: true,
+        enum: PaymentConcept,
+        default: PaymentConcept.MONTHLY_PAYMENT
+    })
+    concept: PaymentConcept;
+
+    @Prop({
+        type: Types.ObjectId,
+        ref: 'User'
+    })
+    createdBy: string;
+
+    @Prop({
+        type: Types.ObjectId,
+        ref: 'User'
+    })
+    updatedBy: Types.ObjectId
 }
 
 

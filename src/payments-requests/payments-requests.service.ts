@@ -17,26 +17,12 @@ export class PaymentsRequestsService {
   async create(createPaymentsRequestDto: CreatePaymentsRequestDto) {
     return await this.paymentRequestModel.create(createPaymentsRequestDto)
   }
-
+  //TODO add filter by location
   async findAllByCommunity(communityId: string, queryParams: QueryParamsPaymentRequestDto) {
-    const { sort, limit, page } = queryParams
+    const { sort, limit, page, status } = queryParams
     const paymetsRequests = await this.paymentRequestModel.paginate({
       community: communityId,
-    }, {
-      limit,
-      page,
-      sort: {
-        createdAt: sort,
-      }
-    })
-
-    return paymetsRequests
-  }
-
-  async findAllByLocation(communityId: string, queryParams: QueryParamsPaymentRequestDto) {
-    const { sort, limit, page } = queryParams
-    const paymetsRequests = await this.paymentRequestModel.paginate({
-      community: communityId,
+      ...(status ? { status } : {})
     }, {
       limit,
       page,

@@ -1,13 +1,23 @@
-import { IsDate, IsEnum, IsInt, IsMongoId, IsOptional, IsString, MaxLength } from "class-validator";
+import {
+    IsEnum,
+    IsInt,
+    IsISO8601,
+    IsMongoId,
+    IsOptional,
+    IsString,
+    MaxLength
+} from "class-validator";
 import { Types } from "mongoose";
+import { PaymentConcept } from "src/common/enums/common.enums";
 import { KindPayment, Paymethod } from "../enums/enums.payments";
 
 export class CreatePaymentDto {
 
-    @IsDate()
+    @IsISO8601()
     date: string;
 
     @IsEnum(KindPayment)
+    @IsOptional()
     kind: KindPayment;
 
     @IsEnum(Paymethod)
@@ -19,10 +29,10 @@ export class CreatePaymentDto {
     description: string;
 
     @IsMongoId()
-    createdBy: Types.ObjectId;
+    resident: Types.ObjectId;
 
     @IsMongoId()
-    client: Types.ObjectId;
+    location: Types.ObjectId
 
     @IsMongoId()
     @IsOptional()
@@ -39,14 +49,14 @@ export class CreatePaymentDto {
     @IsOptional()
     referenceCode: string;
 
-    @IsString()
-    @IsOptional()
-    paymethodName: string;
-
     @IsMongoId()
     community: Types.ObjectId;
 
+    @IsMongoId()
+    paymentRequest: string
+
+    @IsEnum(PaymentConcept)
     @IsString()
     @IsOptional()
-    concept: string;
+    concept: PaymentConcept;
 }

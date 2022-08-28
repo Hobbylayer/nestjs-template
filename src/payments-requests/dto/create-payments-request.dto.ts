@@ -1,17 +1,16 @@
-import { IsCurrency, IsEnum, IsMongoId, IsNumber, IsPositive, IsString } from 'class-validator'
+import { IsEnum, IsMongoId, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator'
+import { PaymentConcept } from 'src/common/enums/common.enums'
+import { StatusPaymentRequest } from '../enums/payment-reques.enums'
 
-enum paymentConcept {
-    MONTHLY_PAYMENT = 'monthly_payment',
-    SPECIAL_FEE = 'special_fee'
-}
+
 export class CreatePaymentsRequestDto {
 
     @IsString()
     readonly description: string
 
     @IsString()
-    @IsEnum(paymentConcept)
-    readonly concept: paymentConcept
+    @IsEnum(PaymentConcept)
+    readonly concept: PaymentConcept
     @IsMongoId()
     readonly community: string
 
@@ -22,4 +21,8 @@ export class CreatePaymentsRequestDto {
     @IsString()
     readonly currency: string
 
+    @IsEnum(StatusPaymentRequest)
+    @IsString()
+    @IsOptional()
+    readonly status: StatusPaymentRequest
 }

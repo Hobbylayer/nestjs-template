@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { PaymentsRequestsService } from './payments-requests.service';
 import { CreatePaymentsRequestDto } from './dto/create-payments-request.dto';
 import { UpdatePaymentsRequestDto } from './dto/update-payments-request.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
+import { QueryParamsPaymentRequestDto } from './dto/query-params-payments-request.dto';
 
 @Controller('payments-requests')
 export class PaymentsRequestsController {
@@ -17,9 +17,9 @@ export class PaymentsRequestsController {
   @Get('community/:id')
   findAllByCommunity(
     @Param('id', ParseMongoIdPipe) id: string,
-    @Query() paginationDto: PaginationDto
+    @Query() queryParams: QueryParamsPaymentRequestDto
   ) {
-    return this.paymentsRequestsService.findAllByCommunity(id, paginationDto);
+    return this.paymentsRequestsService.findAllByCommunity(id, queryParams);
   }
 
   @Get(':id')

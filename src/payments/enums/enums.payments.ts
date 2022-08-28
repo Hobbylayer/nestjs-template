@@ -8,10 +8,8 @@ export enum Paymethod {
     CREDIT_CARD = 'credit_card',
     DEBIT_CARD = 'debit_card',
     BANK_TRANSFER = 'bank_transfer',
-    PAGO_MOVIL = 'pago_movil',
-    PAYPAL = 'paypal',
+    DIGITAL_PAYMENT = 'digital_payment',
     OTHER = 'other',
-    ZELLE = 'zelle'
 }
 
 export enum PaymentStatus {
