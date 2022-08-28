@@ -38,13 +38,13 @@ export class Payment extends Document {
     @Prop({ type: String, enum: PaymentStatus, default: PaymentStatus.PENDING })
     status: PaymentStatus
 
-    @Prop({ type: Types.ObjectId, ref: 'Community', required: true })
+    @Prop({ type: Types.ObjectId, required: true })
     community: Types.ObjectId;
 
     @Prop({ type: Types.ObjectId, ref: 'Location', required: true })
     location: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId, ref: 'PaymentRequest' })
+    @Prop({ type: Types.ObjectId })
     paymentRequest: Types.ObjectId;
 
     @Prop({ required: true })
@@ -52,4 +52,4 @@ export class Payment extends Document {
 }
 
 
-export const PaymetnsSchema = SchemaFactory.createForClass(Payment);
+export const PaymentsSchema = SchemaFactory.createForClass(Payment);

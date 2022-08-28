@@ -48,4 +48,7 @@ export class CreateUserDto {
 
     @IsMongoId()
     readonly community: Types.ObjectId;
+
+    @IsMongoId()
+    readonly location: Types.ObjectId
 }

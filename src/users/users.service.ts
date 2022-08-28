@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,7 +19,11 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    //TODO validate that email is unique
+    const emailAndDniExist = await this.userModel.findOne({
+      $or: [{ email: createUserDto.email }, { dni: createUserDto.dni }],
+    })
+    if (emailAndDniExist) throw new BadRequestException(`Email: ${createUserDto.email} or Dni: ${createUserDto.dni}already register`)
+
     const hash = await bcrypt.hash(createUserDto.password, this.saltRounds);
     await this.userModel.create({ ...createUserDto, password: hash });
     return {
