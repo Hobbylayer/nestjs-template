@@ -14,6 +14,9 @@ import { PaymentsModule } from './payments/payments.module';
 import { LocationModule } from './location/location.module';
 import { PaymentsRequestsModule } from './payments-requests/payments-requests.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { QuestbookModule } from './questbook/questbook.module';
+import { VotesModule } from './votes/votes.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -38,6 +41,9 @@ import { NotificationsModule } from './notifications/notifications.module';
     LocationModule,
     PaymentsRequestsModule,
     NotificationsModule,
+    QuestbookModule,
+    VotesModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
