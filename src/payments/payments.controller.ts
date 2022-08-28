@@ -23,17 +23,20 @@ export class PaymentsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseMongoIdPipe) id: string) {
-    return this.paymentsService.findOne(id);
+  findOne(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @Query() queryParams: QueryParamsPayments
+  ) {
+    return this.paymentsService.findOne(id, queryParams);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
-    return this.paymentsService.update(+id, updatePaymentDto);
+  update(@Param('id', ParseMongoIdPipe) id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
+    return this.paymentsService.update(id, updatePaymentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentsService.remove(+id);
+  remove(@Param('id', ParseMongoIdPipe) id: string) {
+    return this.paymentsService.remove(id);
   }
 }

@@ -9,7 +9,7 @@ import {
 } from "class-validator";
 import { Types } from "mongoose";
 import { PaymentConcept } from "src/common/enums/common.enums";
-import { KindPayment, Paymethod } from "../enums/enums.payments";
+import { KindPayment, PaymentStatus, Paymethod } from "../enums/enums.payments";
 
 export class CreatePaymentDto {
 
@@ -59,4 +59,9 @@ export class CreatePaymentDto {
     @IsString()
     @IsOptional()
     concept: PaymentConcept;
+
+    @IsEnum(PaymentStatus)
+    @IsString()
+    @IsOptional()
+    status: PaymentStatus.APPROVED | PaymentStatus.PENDING | PaymentStatus.VOID
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import { CreatePaymentDto } from './dto/create-payment.dto';
@@ -51,7 +51,7 @@ export class PaymentsService {
       sort: {
         createdAt: sort.toLocaleUpperCase()
       },
-      ...(includeAllField ? { select: 'date number kind location amount referenceCode status' } : {}),
+      ...(includeAllField ? {} : { select: 'date number kind amount referenceCode status' + fields }),
       ...(fields ? {
         populate: {
           path: fields.replace(',', ' '),
@@ -65,18 +65,36 @@ export class PaymentsService {
     return payments
   }
 
-  async findOne(id: string) {
-    const payment = await this.paymentModel.findOne({ _id: id })
+  async findOne(id: string, queryParams: QueryParamsPayments) {
+    const { fields } = queryParams
+    const payment = await this.paymentModel
+      .findOne({ _id: id })
+      .populate(fields.replace(',', " "), 'name')
+
     if (!payment) throw new NotFoundException
     return payment
   }
 
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
+  async update(id: string, updatePaymentDto: UpdatePaymentDto) {
+    try {
+      const payment = await this.paymentModel.findOneAndUpdate({ _id: id }, updatePaymentDto, { new: true })
+      if (!payment) throw new BadRequestException('payment no registed')
+      return payment
+    } catch (error) {
+      this.errorHandler(error)
+    }
+
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+  async remove(id: string) {
+    try {
+      await this.paymentModel.findOneAndDelete({ _id: id })
+      return {
+        message: "Payment deleted"
+      }
+    } catch (error) {
+      this.errorHandler(error)
+    }
   }
 
   createNumbering(totalPayment) {
@@ -88,5 +106,10 @@ export class PaymentsService {
       paymentNumberStringPadded += '0';
     }
     return paymentNumberStringPadded + paymentNumberString;
+  }
+
+  errorHandler(error: any) {
+    if (error.name === 'CastError') throw new BadRequestException(error)
+    throw new InternalServerErrorException(error)
   }
 }
