@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel } from 'mongoose';
+import { Model, PaginateModel } from 'mongoose';
+import { PaymentsRequest } from 'src/payments-requests/entities/payments-request.entity';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { QueryParamsPayments } from './dto/query-params-payments.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
@@ -11,7 +12,9 @@ export class PaymentsService {
 
   constructor(
     @InjectModel(Payment.name)
-    readonly paymentModel: PaginateModel<Payment>
+    readonly paymentModel: PaginateModel<Payment>,
+    @InjectModel(PaymentsRequest.name)
+    readonly paymentRequestModel: Model<PaymentsRequest>
   ) { }
 
   async create(createPaymentDto: CreatePaymentDto) {
@@ -24,6 +27,22 @@ export class PaymentsService {
       number,
       ...createPaymentDto
     })
+
+
+    await this.paymentRequestModel.findOneAndUpdate(
+      {
+        _id: payment.paymentRequest
+      },
+      {
+        $push: {
+          "payments": {
+            payment: payment._id,
+            location: payment.location
+          }
+        }
+      })
+
+
     return payment
   }
 

@@ -1,4 +1,4 @@
-import { IsEnum, IsMongoId, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator'
+import { IsArray, IsEnum, IsMongoId, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator'
 import { PaymentConcept } from 'src/common/enums/common.enums'
 import { StatusPaymentRequest } from '../enums/payment-reques.enums'
 

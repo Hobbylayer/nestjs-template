@@ -25,12 +25,17 @@ export class Community extends Document {
     @Prop({ default: 'USD' })
     currency: string;
 
+    @Prop({ type: Boolean, default: true, })
+    isMultiCurrency: boolean
+
     @Prop({ required: true })
     owner: string;
 
     @Prop({ default: 'active' })
     status: string;
 
+    @Prop({ type: String, required: true })
+    code: string
     //TODO add createdBy and updatedBy
 }
 

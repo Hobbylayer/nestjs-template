@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose'
+import { Payment } from 'src/payments/entities/payment.entity';
 import { CreatePaymentsRequestDto } from './dto/create-payments-request.dto';
 import { QueryParamsPaymentRequestDto } from './dto/query-params-payments-request.dto';
 import { UpdatePaymentsRequestDto } from './dto/update-payments-request.dto';
@@ -10,16 +11,20 @@ import { PaymentsRequest } from './entities/payments-request.entity';
 export class PaymentsRequestsService {
   constructor(
     @InjectModel(PaymentsRequest.name)
-    readonly paymentRequestModel: PaginateModel<PaymentsRequest>
+    readonly paymentRequestModel: PaginateModel<PaymentsRequest>,
+    @InjectModel(Payment.name)
+    readonly paymentModel: PaginateModel<Payment>
   ) { }
 
 
   async create(createPaymentsRequestDto: CreatePaymentsRequestDto) {
     return await this.paymentRequestModel.create(createPaymentsRequestDto)
   }
-  //TODO add filter by location
+
+
   async findAllByCommunity(communityId: string, queryParams: QueryParamsPaymentRequestDto) {
-    const { sort, limit, page, status } = queryParams
+    const { sort, limit, page, status, } = queryParams
+
     const paymetsRequests = await this.paymentRequestModel.paginate({
       community: communityId,
       ...(status ? { status } : {})
@@ -28,14 +33,23 @@ export class PaymentsRequestsService {
       page,
       sort: {
         createdAt: sort,
-      }
+      },
     })
 
     return paymetsRequests
   }
 
   async findOne(id: string) {
-    const paymentRequest = await this.paymentRequestModel.findOne({ _id: id })
+    const { includePayments } = { includePayments: true }
+    let paymentRequest: any;
+    if (includePayments) {
+      paymentRequest = await this.findPaymentRequestWithPayments(id)
+    } else {
+      paymentRequest = await this.paymentRequestModel
+        .findOne({ _id: id })
+        .select('-payments')
+    }
+
     if (!paymentRequest) throw new NotFoundException
     return paymentRequest
   }
@@ -52,5 +66,26 @@ export class PaymentsRequestsService {
 
   async remove(id: string) {
     return await this.paymentRequestModel.findOneAndDelete({ _id: id })
+  }
+
+  async findPaymentRequestWithPayments(id: string) {
+    const paymentRequest = await this.paymentRequestModel
+      .findOne({ _id: id })
+      .populate({
+        path: 'payments',
+        populate: {
+          path: 'payment',
+          select: 'number concept amount currency'
+        }
+      })
+      .populate({
+        path: 'payments',
+        populate: {
+          path: 'location',
+          select: 'name _id'
+        }
+      })
+
+    return paymentRequest
   }
 }

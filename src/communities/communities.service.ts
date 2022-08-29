@@ -18,7 +18,9 @@ export class CommunitiesService {
 
     const exist = await this.existEmail(createCommunityDto.email)
     if (exist) return new HttpException('Email already exists', HttpStatus.BAD_REQUEST)
-    const data = await this.communityModel.create(createCommunityDto)
+    const totalCommunities = await this.communityModel.find({}).count()
+    const code = this.createCode(totalCommunities)
+    const data = await this.communityModel.create({ code, ...createCommunityDto })
     return {
       message: 'Community created successfully',
       data
@@ -66,6 +68,16 @@ export class CommunitiesService {
     if (!result) return new HttpException('Community not found', HttpStatus.NOT_FOUND)
     return result
   }
-
+  createCode(totalRegisters) {
+    const code = totalRegisters + 1;
+    const codeString = code.toString();
+    const codeLength = codeString.length;
+    let codeStringPadded = '';
+    for (let i = 0; i < 4 - codeLength; i++) {
+      codeStringPadded += '0';
+    }
+    return codeStringPadded + codeString;
+  }
   handleExeption(error: Error) { }
+
 }

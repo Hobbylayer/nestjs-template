@@ -36,7 +36,7 @@ export class Payment extends Document {
     @Prop({ type: Types.ObjectId, ref: 'User' })
     resident: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId, ref: 'Location', required: true })
+    @Prop({ type: Types.ObjectId, ref: 'Location' })
     location: Types.ObjectId;
 
     @Prop({ type: Types.ObjectId, ref: 'Bank' })
@@ -67,6 +67,16 @@ export class Payment extends Document {
         default: PaymentConcept.MONTHLY_PAYMENT
     })
     concept: PaymentConcept;
+
+    @Prop({
+        type: Number
+    })
+    exchangeRate: Number
+
+    @Prop({
+        type: String
+    })
+    mainCurrencyAmount: string
 
     @Prop({
         type: Types.ObjectId,

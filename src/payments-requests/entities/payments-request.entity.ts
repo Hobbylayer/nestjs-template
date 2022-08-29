@@ -27,6 +27,25 @@ export class PaymentsRequest extends Document {
 
     @Prop({ type: String, default: 'open' })
     status: string
+
+    @Prop({
+        type: [
+            {
+                payment: {
+                    type: Types.ObjectId, ref: 'Payment'
+                },
+                location: {
+                    type: Types.ObjectId, ref: 'Location'
+                },
+            }]
+    })
+    payments: { id: string; location: string }[];
+    // @Prop({
+    //     type: Types.Array<Types.ObjectId>,
+    //     ref: 'Payment',
+    //     default: []
+    // })
+    // payments: Types.ObjectId[]
 }
 
 
