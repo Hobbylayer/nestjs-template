@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PaymentsRequest, PaymentsRequestSchema } from './entities/payments-request.entity';
 import { Payment, PaymentsSchema } from '../payments/entities/payment.entity'
 import * as mongoosePaginate from 'mongoose-paginate-v2';
+import { Location, LocationSchema } from 'src/location/entities/location.entity';
 
 @Module({
   controllers: [PaymentsRequestsController],
@@ -29,7 +30,17 @@ import * as mongoosePaginate from 'mongoose-paginate-v2';
           return schema
         }
       }
-    ])
+    ]),
+    MongooseModule.forFeatureAsync([
+      {
+        name: Location.name,
+        useFactory: () => {
+          const schema = LocationSchema
+          schema.plugin(mongoosePaginate)
+          return schema
+        }
+      }
+    ]),
   ],
 })
 export class PaymentsRequestsModule { }

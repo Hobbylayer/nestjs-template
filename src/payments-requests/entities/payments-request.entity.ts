@@ -1,7 +1,10 @@
 import { Document, Types } from 'mongoose'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 
-@Schema({ timestamps: true })
+@Schema({
+    timestamps: true,
+    collection: 'payments_requests'
+})
 export class PaymentsRequest extends Document {
 
     @Prop({ type: String })
@@ -28,24 +31,18 @@ export class PaymentsRequest extends Document {
     @Prop({ type: String, default: 'open' })
     status: string
 
+    @Prop({ type: Types.ObjectId, ref: 'Location' })
+    debts: string[]
+
     @Prop({
         type: [
             {
-                payment: {
-                    type: Types.ObjectId, ref: 'Payment'
-                },
-                location: {
-                    type: Types.ObjectId, ref: 'Location'
-                },
-            }]
+                payment: { type: Types.ObjectId, ref: 'Payment' },
+                location: { type: Types.ObjectId, ref: 'Location' },
+            }
+        ]
     })
     payments: { id: string; location: string }[];
-    // @Prop({
-    //     type: Types.Array<Types.ObjectId>,
-    //     ref: 'Payment',
-    //     default: []
-    // })
-    // payments: Types.ObjectId[]
 }
 
 
