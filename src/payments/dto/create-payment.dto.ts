@@ -1,10 +1,9 @@
 import {
-    IsArray,
     IsEnum,
-    IsInt,
     IsISO8601,
     IsMongoId,
     IsOptional,
+    IsPositive,
     IsString,
     MaxLength
 } from "class-validator";
@@ -43,7 +42,7 @@ export class CreatePaymentDto {
     @IsOptional()
     currency: string;
 
-    @IsInt()
+    @IsPositive()
     amount: number;
 
     @IsString()

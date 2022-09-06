@@ -34,7 +34,7 @@ export class PaymentsRequestsService {
 
 
   async findAllByCommunity(communityId: string, queryParams: QueryParamsPaymentRequestDto) {
-    const { sort, limit, page, status, location } = queryParams
+    const { sort, limit = 10, page = 1, status, location } = queryParams
     let paymetsRequests;
     if (location) {
       paymetsRequests = await this.findByLocation(location)
@@ -106,7 +106,7 @@ export class PaymentsRequestsService {
     return paymentRequest
   }
   async findByLocation(id: string) {
-    const paymentsRequest = await this.paymentRequestModel.find({
+    const paymentsRequest = await this.paymentRequestModel.paginate({
       "debts": {
         "$all": [new Types.ObjectId(id)]
       }
