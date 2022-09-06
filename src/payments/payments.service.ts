@@ -141,7 +141,7 @@ export class PaymentsService {
     this.update(id, { status: PaymentStatus.APPROVED })
 
     return {
-      message: 'pago conciliado correctamente',
+      message: 'Pago conciliado correctamente',
       payment: payment
     }
   }
