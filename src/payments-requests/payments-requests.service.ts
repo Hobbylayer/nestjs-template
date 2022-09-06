@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, Types } from 'mongoose'
+import { STATUS_DOCUMENT } from 'src/common/enums/common.enums';
 import { Location } from 'src/location/entities/location.entity';
 import { Payment } from 'src/payments/entities/payment.entity';
 import { CreatePaymentsRequestDto } from './dto/create-payments-request.dto';
@@ -26,7 +27,7 @@ export class PaymentsRequestsService {
   async create(createPaymentsRequestDto: CreatePaymentsRequestDto) {
     const { community } = createPaymentsRequestDto
 
-    let locations = await this.locationModel.find({ community, status: "active" }).select('_id name')
+    let locations = await this.locationModel.find({ community, status: STATUS_DOCUMENT.ACTIVE }).select('_id name')
     locations = locations.map(({ _id }) => _id)
 
     return await this.paymentRequestModel.create({ ...createPaymentsRequestDto, debts: locations })
@@ -34,7 +35,7 @@ export class PaymentsRequestsService {
 
 
   async findAllByCommunity(communityId: string, queryParams: QueryParamsPaymentRequestDto) {
-    const { sort, limit = 10, page = 1, status, location } = queryParams
+    const { sort, limit = 10, page = 1, payments_request_status: status, location } = queryParams
     let paymetsRequests;
     if (location) {
       paymetsRequests = await this.findByLocation(location)

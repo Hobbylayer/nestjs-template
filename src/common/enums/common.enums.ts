@@ -5,3 +5,8 @@ export enum PaymentConcept {
     PROVIDER_PAYMENT = 'supplier_payment',
     EMPLOYEE_PAYMENT = 'employee_payment'
 }
+
+export enum STATUS_DOCUMENT {
+    ACTIVE = 'active',
+    INACTIVE = 'inactive'
+}

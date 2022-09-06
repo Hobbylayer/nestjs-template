@@ -17,6 +17,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { QuestbookModule } from './questbook/questbook.module';
 import { VotesModule } from './votes/votes.module';
 import { ReportsModule } from './reports/reports.module';
+import { BanksModule } from './banks/banks.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ReportsModule } from './reports/reports.module';
     QuestbookModule,
     VotesModule,
     ReportsModule,
+    BanksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
