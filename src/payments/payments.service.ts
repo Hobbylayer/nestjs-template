@@ -1,11 +1,17 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PaginateModel } from 'mongoose';
+import { Model, PaginateModel, Types } from 'mongoose';
 import { PaymentsRequest } from 'src/payments-requests/entities/payments-request.entity';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { QueryParamsPayments } from './dto/query-params-payments.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { Payment } from './entities/payment.entity';
+import { PaymentStatus } from './enums/enums.payments';
 
 @Injectable()
 export class PaymentsService {
@@ -27,21 +33,6 @@ export class PaymentsService {
       number,
       ...createPaymentDto
     })
-
-
-    await this.paymentRequestModel.findOneAndUpdate(
-      {
-        _id: payment.paymentRequest
-      },
-      {
-        $push: {
-          "payments": {
-            payment: payment._id,
-            location: payment.location
-          }
-        }
-      })
-
 
     return payment
   }
@@ -113,6 +104,43 @@ export class PaymentsService {
       }
     } catch (error) {
       this.errorHandler(error)
+    }
+  }
+
+  //TODO que pueda recibir un array de string por si el pago se hace en diferentes partes
+  async reconciliate(id: string) {
+
+    const payment = await this.paymentModel.findOne({ _id: id })
+
+    const paymentRequest = await this.paymentRequestModel.findOne({
+      _id: new Types.ObjectId(payment.paymentRequest)
+    })
+    if (paymentRequest.amount !== payment.amount) throw new BadRequestException('El monto a conciliar no coincide con la deuda')
+
+
+    const debts = paymentRequest.debts
+      .map(debt => debt.toString())
+      .filter((debt) => debt !== payment.location.toString())
+
+    paymentRequest.debts = debts
+    paymentRequest.payments.push({
+      //@ts-ignore
+      payment: payment._id,
+      location: payment.location.toString()
+    })
+
+    await this.paymentRequestModel.findOneAndUpdate(
+      {
+        _id: payment.paymentRequest
+      },
+      paymentRequest,
+    )
+
+    this.update(id, { status: PaymentStatus.APPROVED })
+
+    return {
+      message: 'pago conciliado correctamente',
+      payment: payment
     }
   }
 

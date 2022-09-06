@@ -14,6 +14,13 @@ export class PaymentsController {
     return this.paymentsService.create(createPaymentDto);
   }
 
+  @Post('reconciliate/:paymentId')
+  reconciliate(
+    @Param('paymentId', ParseMongoIdPipe) paymentId: string
+  ) {
+    return this.paymentsService.reconciliate(paymentId)
+  }
+
   @Get('community/:id')
   findAllByCommunity(
     @Param('id', ParseMongoIdPipe) id: string,
