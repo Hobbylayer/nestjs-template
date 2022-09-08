@@ -18,6 +18,7 @@ import { QuestbookModule } from './questbook/questbook.module';
 import { VotesModule } from './votes/votes.module';
 import { ReportsModule } from './reports/reports.module';
 import { BanksModule } from './banks/banks.module';
+import { CommonAreasModule } from './common-areas/common-areas.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { BanksModule } from './banks/banks.module';
     VotesModule,
     ReportsModule,
     BanksModule,
+    CommonAreasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
