@@ -48,13 +48,11 @@ export class CommonAreasService {
   }
 
   async update (id: Types.ObjectId, updateCommonAreaDto: UpdateCommonAreaDto) {
-    const result = await this.commonAreaModel.findByIdAndUpdate(id, updateCommonAreaDto);
+    const result = await this.commonAreaModel.findByIdAndUpdate(id, updateCommonAreaDto, { new: true });
     if (!result)
       return new HttpException('Common area not found', HttpStatus.NOT_FOUND)
 
-    // refreshing payload to return. For some reason, `result` isn't the
-    // updated data, it's the old data.
-    return (await this.findOne(id))
+    return result;
   }
 
   async remove (id: Types.ObjectId) {
