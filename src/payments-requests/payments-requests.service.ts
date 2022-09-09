@@ -35,11 +35,7 @@ export class PaymentsRequestsService {
 
 
   async findAllByCommunity(communityId: string, queryParams: QueryParamsPaymentRequestDto) {
-<<<<<<< HEAD
-    const { sort, limit = 10, page = 1, status, location } = queryParams
-=======
     const { sort, limit = 10, page = 1, payments_request_status: status, location } = queryParams
->>>>>>> main
     let paymetsRequests;
     if (location) {
       paymetsRequests = await this.findByLocation(location)
