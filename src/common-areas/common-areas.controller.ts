@@ -12,12 +12,12 @@ export class CommonAreasController {
     private readonly commonAreasService: CommonAreasService
   ) { }
 
-  @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.commonAreasService.findAll(paginationDto);
+  @Get(":communityId")
+  byCommunity(@Param('communityId', ParseMongoIdPipe) communityId: Types.ObjectId) {
+    return this.commonAreasService.findByCommunity(communityId);
   }
 
-  @Get(":id")
+  @Get("by-id/:id")
   findOne(@Param('id', ParseMongoIdPipe) id: Types.ObjectId) {
     return this.commonAreasService.findOne(id);
   }

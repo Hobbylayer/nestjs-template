@@ -26,8 +26,8 @@ export class CommonAreasService {
     };
   }
 
-  async findAll({ limit = 4, page = 1 }: PaginationDto) {
-    return await this.commonAreaModel.paginate({}, { page, limit });
+  async findByCommunity (communityId: Types.ObjectId) {
+    return await this.commonAreaModel.find({ community: communityId });
   }
 
   async findOne(id: Types.ObjectId) {
