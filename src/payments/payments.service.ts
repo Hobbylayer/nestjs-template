@@ -43,7 +43,7 @@ export class PaymentsService {
       page = 1,
       sort = 'ASC',
       location,
-      status,
+      payment_status: status,
       number,
       includeAllField = false,
       fields
@@ -111,12 +111,18 @@ export class PaymentsService {
   async reconciliate(id: string) {
 
     const payment = await this.paymentModel.findOne({ _id: id })
+    if (payment.status === PaymentStatus.APPROVED) throw new BadRequestException('Este pago ya ha sido conciliado')
+
+
 
     const paymentRequest = await this.paymentRequestModel.findOne({
       _id: new Types.ObjectId(payment.paymentRequest)
     })
-    if (paymentRequest.amount !== payment.amount) throw new BadRequestException('El monto a conciliar no coincide con la deuda')
-
+    //TODO Si la moneda es diferente a la moneda principal hace la conversion a moenda principal
+    /*
+    * Valida que el monto del pago sea igual al monto de la solicitud de pago
+    */
+    // if (paymentRequest.amount !== payment.amount) throw new BadRequestException('El monto a conciliar no coincide con la deuda')
 
     const debts = paymentRequest.debts
       .map(debt => debt.toString())
@@ -139,7 +145,7 @@ export class PaymentsService {
     this.update(id, { status: PaymentStatus.APPROVED })
 
     return {
-      message: 'pago conciliado correctamente',
+      message: 'Pago conciliado correctamente',
       payment: payment
     }
   }

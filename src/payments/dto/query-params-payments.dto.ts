@@ -16,7 +16,7 @@ export class QueryParamsPayments extends PaginationDto {
     @IsEnum(PaymentStatus)
     @IsString()
     @IsOptional()
-    status: PaymentStatus
+    payment_status: PaymentStatus
 
     @IsBoolean()
     @IsOptional()

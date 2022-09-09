@@ -8,7 +8,7 @@ export class QueryParamsPaymentRequestDto extends PaginationDto {
 
     @IsEnum(StatusPaymentRequest)
     @IsOptional()
-    readonly status?: StatusPaymentRequest
+    readonly payments_request_status?: StatusPaymentRequest
 
     @IsMongoId()
     @IsOptional()

@@ -28,6 +28,9 @@ export class PaymentsRequest extends Document {
     @Prop({ type: String, default: 'USD' })
     currency: string
 
+    @Prop({ type: String })
+    mainCurrencyAmount: number
+
     @Prop({ type: String, default: 'open' })
     status: string
 

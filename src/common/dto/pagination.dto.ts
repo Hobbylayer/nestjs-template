@@ -1,4 +1,5 @@
-import { IsOptional, IsPositive, IsString, Max, Min } from "class-validator"
+import { IsEnum, IsOptional, IsPositive, IsString, Max, Min } from "class-validator"
+import { STATUS_DOCUMENT } from "../enums/common.enums"
 
 
 
@@ -18,4 +19,13 @@ export class PaginationDto {
     @IsOptional()
     @IsString()
     sort: Sort
+
+    @IsOptional()
+    @IsString()
+    name: string
+
+    @IsOptional()
+    @IsString()
+    @IsEnum(STATUS_DOCUMENT)
+    status: STATUS_DOCUMENT
 }
