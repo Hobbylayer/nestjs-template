@@ -19,6 +19,7 @@ import { VotesModule } from './votes/votes.module';
 import { ReportsModule } from './reports/reports.module';
 import { BanksModule } from './banks/banks.module';
 import { CommonAreasModule } from './common-areas/common-areas.module';
+import { DebtorsModule } from './debtors/debtors.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { CommonAreasModule } from './common-areas/common-areas.module';
     ReportsModule,
     BanksModule,
     CommonAreasModule,
+    DebtorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
