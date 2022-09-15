@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types, Model } from 'mongoose';
 import { PaymentsRequest } from '../payments-requests/entities/payments-request.entity'
-import { User } from '../users/entities/user.entity'
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class DebtorsService {
@@ -23,9 +24,14 @@ export class DebtorsService {
    * @author Gabriel Guerra - @AlphaTechnolog [https://github.com/AlphaTechnolog]
    * @date 10/09/22 18:57
    * @param {Types.ObjectId} communityId: The community id that should be queried to get debtors.
+   * @param {PaginationDto} paginationDto: Just the parameters to make the pagination, like: limit, page, sort...
    * @returns {Promise<any>}
    */
-  async findByCommunity (communityId: Types.ObjectId) {
+  async findByCommunity (communityId: Types.ObjectId, paginationDto: PaginationDto) {
+    if (paginationDto.sort !== 'ASC' && paginationDto.sort !== 'DESC' && paginationDto.sort !== undefined) {
+      return new HttpException('Invalid sort parameter, valid choices: ASC or DESC', HttpStatus.BAD_REQUEST);
+    }
+
     // starting the first query statement.
     let result = await this.paymentsRequestModel
       .aggregate([
@@ -98,7 +104,14 @@ export class DebtorsService {
         // fetch the first element of the queried location.
         {
           $unwind: "$location"
-        }
+        },
+        // sort by mainCurrencyAmount
+        {
+          $sort: {
+            // ascendent by default.
+            mainCurrencyAmount: paginationDto.sort === 'ASC' ? 1 : paginationDto.sort === 'DESC' ? -1 : 1,
+          },
+        },
       ])
       .exec(); // executes the $lookup and other stuff.
 
