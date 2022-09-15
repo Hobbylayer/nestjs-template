@@ -34,8 +34,8 @@ export class PaymentsRequest extends Document {
     @Prop({ type: String, default: 'open' })
     status: string
 
-    @Prop({ type: Types.ObjectId, ref: 'Location' })
-    debts: string[]
+    @Prop({ type: Types.Array<Types.ObjectId>, ref: 'Location' })
+    debts: Types.ObjectId[]
 
     @Prop({
         type: [

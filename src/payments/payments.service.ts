@@ -127,6 +127,7 @@ export class PaymentsService {
     const debts = paymentRequest.debts
       .map(debt => debt.toString())
       .filter((debt) => debt !== payment.location.toString())
+      .map((debt) => new Types.ObjectId(debt))
 
     paymentRequest.debts = debts
     paymentRequest.payments.push({

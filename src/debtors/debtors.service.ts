@@ -100,7 +100,7 @@ export class DebtorsService {
       },
       // fetch the first element of the queried location.
       {
-        $unwind: "$location"
+        $unwind: "$location",
       },
       // sort by mainCurrencyAmount
       {
@@ -136,7 +136,7 @@ export class DebtorsService {
     // this will be removed, because that will be made with $lookup instead of a simple js map.
     result = await Promise.all(result.map(async (item) => ({
       ...item,
-      resident: await this.userModel.findOne({ location: item.location._id.toString() })
+      resident: await this.userModel.findOne({ location: item.location._id.toString() }).select('name lastName dni')
     })))
 
     // reformat the response.
