@@ -27,10 +27,9 @@ export class DebtorsService {
    * @param {PaginationDto} paginationDto: Just the parameters to make the pagination, like: limit, page, sort...
    * @returns {Promise<any>}
    */
-  async findByCommunity (communityId: Types.ObjectId, paginationDto: PaginationDto) {
-    if (paginationDto.sort !== 'ASC' && paginationDto.sort !== 'DESC' && paginationDto.sort !== undefined) {
-      return new HttpException('Invalid sort parameter, valid choices: ASC or DESC', HttpStatus.BAD_REQUEST);
-    }
+  async findByCommunity(communityId: Types.ObjectId, paginationDto: PaginationDto) {
+
+    const { sort = 'ASC', limit = 10, page = 1 } = paginationDto;
 
     const query: PipelineStage[] = [
       // querying by communityId
@@ -107,28 +106,28 @@ export class DebtorsService {
       {
         $sort: {
           // ascendent by default.
-          mainCurrencyAmount: paginationDto.sort === 'ASC' ? 1 : paginationDto.sort === 'DESC' ? -1 : 1,
+          mainCurrencyAmount: sort === 'ASC' ? 1 : -1,
         },
       },
     ];
 
     // pagination stage.
     const paginationStage: PipelineStage[] = [
-      { $skip: (paginationDto.page - 1) * paginationDto.limit },
-      { $limit: paginationDto.limit },
-    ]; 
+      { $skip: (page - 1) * limit },
+      { $limit: limit },
+    ];
 
     // starting the first query statement.
     let result = await this.paymentsRequestModel
-      .aggregate([ ...query, ...paginationStage ])
+      .aggregate([...query, ...paginationStage])
       .exec(); // Just executes the whole query.
 
     // calc total of documents.
     const totalDocs: number = (await this.paymentsRequestModel.aggregate(query).exec()).length;
 
     // calc total of pages.
-    let totalPages: number = Math.trunc(totalDocs / paginationDto.limit);
-    if (totalDocs % paginationDto.limit > 0)
+    let totalPages: number = Math.trunc(totalDocs / limit);
+    if (totalDocs % limit > 0)
       totalPages++;
 
     // merge the users in the base result.
@@ -145,8 +144,8 @@ export class DebtorsService {
       docs: result,
       totalDocs,
       totalPages,
-      limit: paginationDto.limit,
-      page: paginationDto.page,
+      limit: limit,
+      page: page,
     }
   }
 }

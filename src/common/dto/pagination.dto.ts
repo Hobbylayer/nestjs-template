@@ -3,7 +3,10 @@ import { STATUS_DOCUMENT } from "../enums/common.enums"
 
 
 
-type Sort = "ASC" | "DESC"
+enum Sort {
+    ASC = "ASC",
+    DESC = "DESC"
+}
 
 export class PaginationDto {
     @IsOptional()
@@ -17,6 +20,7 @@ export class PaginationDto {
     page?: number
 
     @IsOptional()
+    @IsEnum(Sort, { message: 'Invalid sort parameter, valid choices: ASC or DESC' })
     @IsString()
     sort: Sort
 
