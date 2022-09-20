@@ -45,6 +45,11 @@ export class UsersService {
     return result;
   }
 
+  async findOneByEmail(email: string) {
+    const user = await this.userModel.findOne({ email, status: UserStatus.ACTIVE }).select('_id name email password roles')
+    return user
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     const result = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).select('-__v');
     return result;

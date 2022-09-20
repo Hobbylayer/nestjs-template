@@ -20,5 +20,8 @@ import * as mongoosePaginate from 'mongoose-paginate-v2';
       }
     ])
   ],
+  exports: [
+    UsersService
+  ]
 })
 export class UsersModule { }

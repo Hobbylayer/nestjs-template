@@ -20,6 +20,7 @@ import { ReportsModule } from './reports/reports.module';
 import { BanksModule } from './banks/banks.module';
 import { CommonAreasModule } from './common-areas/common-areas.module';
 import { DebtorsModule } from './debtors/debtors.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { DebtorsModule } from './debtors/debtors.module';
     BanksModule,
     CommonAreasModule,
     DebtorsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
