@@ -75,4 +75,26 @@ export class UsersService {
       message: 'User disable successfully'
     }
   }
+  /**
+   * 
+   * @param id User id
+   * @returns Session with community, location info
+   */
+  async self(id: string) {
+    const result = await this.userModel.findById(id).populate('community location')
+    const user = {
+      _id: result._id,
+      name: result.name,
+      lastName: result.lastName,
+      phone: result.phone,
+      email: result.email,
+      dni: result.dni,
+      roles: result.roles,
+    }
+    return {
+      user,
+      community: result.community,
+      location: result.location,
+    }
+  }
 }

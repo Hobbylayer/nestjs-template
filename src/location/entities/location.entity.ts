@@ -1,4 +1,4 @@
-import { Document } from 'mongoose'
+import { Document, Types } from 'mongoose'
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose'
 import { LocationsStatus } from '../enums/locations.enums';
 
@@ -11,15 +11,23 @@ export class Location extends Document {
     @Prop({ required: true })
     name: string;
 
+    @Prop({ type: String })
+    description: string
+
     @Prop({ required: true, ref: 'Community' })
     community: string;
 
-    @Prop({ ref: 'User' })
+    @Prop({ type: Types.ObjectId, ref: 'User' })
+    residentId: string
+
+    @Prop({ type: Types.ObjectId, ref: 'User' })
+    ownerId: string
+
+    @Prop({ type: Types.ObjectId, ref: 'User' })
     createdBy: string;
 
-    @Prop({ ref: 'User' })
+    @Prop({ type: Types.ObjectId, ref: 'User' })
     updatedBy: string;
-    //TODO add createdBy and updatedBy
 
 }
 
