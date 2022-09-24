@@ -64,8 +64,8 @@ export class LocationService {
     const result = await this.locationModel.findOne({
       $and: [{ name }, { community: communityId }],
     });
-    if (!result) false;
-    return true;
+    if (result) return true;
+    return false;
   }
 
   async update(id: string, updateLocationDto: UpdateLocationDto) {
