@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
@@ -17,7 +17,7 @@ export class LocationService {
 
 
   async create(createLocationDto: CreateLocationDto) {
-    const result = await this.findOneByName(createLocationDto.name)
+    const result = await this.existLocation(createLocationDto.community, createLocationDto.name)
     if (result) throw new BadRequestException([`Location with name ${createLocationDto.name} is already registerd`])
     const location = await this.locationModel.create(createLocationDto)
     return location
@@ -42,12 +42,32 @@ export class LocationService {
     return `This action returns a #${id} location`;
   }
 
-  async findOneByName(name: string) {
-    return await this.locationModel.findOne({ name })
+  async findOneByName(communityId: string, name: string) {
+    const result = await this.locationModel.findOne({
+      $and: [
+        { name }, { community: communityId }
+      ]
+    })
+    if (!result) throw new NotFoundException('Location not found')
+    return result
   }
 
+  private async existLocation(communityId, name) {
+    const result = await this.locationModel.findOne({
+      $and: [
+        { name }, { community: communityId }
+      ]
+    })
+    if (!result) false
+    return true
+  }
+
+
   async update(id: string, updateLocationDto: UpdateLocationDto) {
-    return await this.locationModel.findByIdAndUpdate(id, { name: updateLocationDto.name }, { new: true })
+    return await this.locationModel.findByIdAndUpdate(id,
+      {
+        name: updateLocationDto.name
+      }, { new: true })
   }
 
   async remove(id: string) {

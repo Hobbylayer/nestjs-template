@@ -24,9 +24,12 @@ export class LocationController {
     return this.locationService.findOneById(id);
   }
 
-  @Get('by-name/:name')
-  findOneByName(@Query('name') name: string) {
-    return this.locationService.findOneByName(name)
+  @Get('/:id/by-name/:name')
+  findOneByName(
+    @Query('name') name: string,
+    @Query('id', ParseMongoIdPipe) communityId: string
+  ) {
+    return this.locationService.findOneByName(communityId, name)
   }
 
   @Put(':id')
