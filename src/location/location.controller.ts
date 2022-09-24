@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { LocationService } from './location.service';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
@@ -15,7 +24,10 @@ export class LocationController {
   }
 
   @Get(':id')
-  findAllByCummunityId(@Param('id', ParseMongoIdPipe) id: string, @Query() paginationDto: PaginationDto) {
+  findAllByCummunityId(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @Query() paginationDto: PaginationDto,
+  ) {
     return this.locationService.findAllByCommunityId(id, paginationDto);
   }
 
@@ -25,15 +37,18 @@ export class LocationController {
   }
 
   @Get('/:id/by-name/:name')
-  findOneByName(
+  findByName(
     @Param('name') name: string,
-    @Param('id', ParseMongoIdPipe) communityId: string
+    @Param('id', ParseMongoIdPipe) communityId: string,
   ) {
-    return this.locationService.findOneByName(communityId, name)
+    return this.locationService.findByName(communityId, name);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseMongoIdPipe) id: string, @Body() updateLocationDto: UpdateLocationDto) {
+  update(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @Body() updateLocationDto: UpdateLocationDto,
+  ) {
     return this.locationService.update(id, updateLocationDto);
   }
 
