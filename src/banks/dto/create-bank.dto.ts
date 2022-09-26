@@ -16,7 +16,6 @@ export class CreateBankDto {
 
     @IsOptional()
     @IsString()
-    @MinLength(3)
     readonly number: string;
 
     @IsOptional()
