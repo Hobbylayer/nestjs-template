@@ -10,12 +10,11 @@ import { UserStatus } from './enums/users.enums';
 
 @Injectable()
 export class UsersService {
-
   private readonly saltRounds = 10;
 
   constructor(
     @InjectModel(User.name)
-    readonly userModel: PaginateModel<User>
+    private readonly userModel: PaginateModel<User>
   ) { }
 
   async create(createUserDto: CreateUserDto) {
