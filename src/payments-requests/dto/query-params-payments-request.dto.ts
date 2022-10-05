@@ -1,4 +1,4 @@
-import { IsEnum, IsMongoId, IsOptional } from "class-validator";
+import { IsEnum, IsMongoId, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { StatusPaymentRequest } from "../enums/payment-reques.enums";
 
@@ -13,4 +13,13 @@ export class QueryParamsPaymentRequestDto extends PaginationDto {
     @IsMongoId()
     @IsOptional()
     readonly location?: string
+
+    @IsString()
+    @IsOptional()
+    readonly concept?: string
+
+    @IsOptional()
+    @IsNumber()
+    @IsPositive()
+    readonly amount: number
 }
