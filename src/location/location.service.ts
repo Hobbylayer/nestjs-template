@@ -48,8 +48,12 @@ export class LocationService {
     );
   }
 
-  findOneById(id: string) {
-    return `This action returns a #${id} location`;
+  async findOneById(id: string) {
+    const result = await this.locationModel.findOne({ _id: id })
+
+    if (!result) throw new NotFoundException('Locations no encontrada')
+
+    return result
   }
 
   async findByName(communityId: string, name: string) {
