@@ -19,20 +19,40 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
+
     const emailAndDniExist = await this.userModel.findOne({
       $or: [{ email: createUserDto.email }, { dni: createUserDto.dni }],
     })
     if (emailAndDniExist) throw new BadRequestException(`Email: ${createUserDto.email} or Dni: ${createUserDto.dni}already register`)
 
+
     const hash = await bcrypt.hash(createUserDto.password, this.saltRounds);
-    await this.userModel.create({ ...createUserDto, password: hash });
+    const newUser = await this.userModel.create({ ...createUserDto, password: hash })
+
     return {
-      message: 'User created successfully'
+      message: 'User created successfully',
+      user: {
+        _id: newUser._id,
+        dni: newUser.dni,
+        name: newUser.name,
+        last_name: newUser.lastName
+      }
     }
   }
 
   findAll() {
     return `This action returns all users`;
+  }
+  async totalResident(communityId: string) {
+    const total = await this.userModel.find({
+      community: communityId,
+      status: UserStatus.ACTIVE,
+      location: {
+        $exists: true
+      }
+    }).count()
+
+    return { total }
   }
 
   async findAllByCommunityId(id: string, queryOptionsDto: UsersQueryOptionsDto) {
@@ -70,7 +90,7 @@ export class UsersService {
     return user
   }
 
-  async byName (communityId: string, name: string) {
+  async byName(communityId: string, name: string) {
     const result = await this.userModel.paginate({
       $and: [{ name: new RegExp(name, 'i') }, { community: communityId }],
     });

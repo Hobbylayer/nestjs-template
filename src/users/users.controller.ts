@@ -3,7 +3,6 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Auth } from 'src/auth/decorators';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { UsersQueryOptionsDto } from './dto/query-options.dto';
@@ -50,6 +49,13 @@ export class UsersController {
     @GetUser(['_id']) id: string
   ) {
     return this.usersService.self(id)
+  }
+
+  @Get('/total-residents/:communityId')
+  totalUserActive(
+    @Param('communityId') communityId: string
+  ) {
+    return this.usersService.totalResident(communityId)
   }
 
   @Put(':id')
