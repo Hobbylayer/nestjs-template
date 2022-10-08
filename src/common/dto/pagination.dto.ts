@@ -13,23 +13,24 @@ export class PaginationDto {
     @IsPositive()
     @Min(1)
     @Max(30)
-    limit?: number
+    readonly limit?: number
 
     @IsOptional()
     @IsPositive()
-    page?: number
+    readonly page?: number
 
     @IsOptional()
     @IsEnum(Sort, { message: 'Invalid sort parameter, valid choices: ASC or DESC' })
     @IsString()
-    sort: Sort
+    readonly sort: Sort
 
+    // TODO remove and set on queryOptionsDto file
     @IsOptional()
     @IsString()
-    name: string
+    readonly name: string
 
     @IsOptional()
     @IsString()
     @IsEnum(STATUS_DOCUMENT)
-    status: STATUS_DOCUMENT
+    readonly status: STATUS_DOCUMENT
 }

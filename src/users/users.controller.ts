@@ -6,6 +6,7 @@ import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Auth } from 'src/auth/decorators';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
+import { UsersQueryOptionsDto } from './dto/query-options.dto';
 
 @Controller('users')
 export class UsersController {
@@ -27,8 +28,12 @@ export class UsersController {
   }
 
   @Get('community/:id')
-  findAllByCommunityId(@Param('id', ParseMongoIdPipe) id: string, @Query() paginationDto: PaginationDto) {
-    return this.usersService.findAllByCommunityId(id, paginationDto);
+  findAllByCommunityId(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @Query() QueryOptionsDto: UsersQueryOptionsDto,
+  ) {
+
+    return this.usersService.findAllByCommunityId(id, QueryOptionsDto);
   }
 
   @Get('user/self')

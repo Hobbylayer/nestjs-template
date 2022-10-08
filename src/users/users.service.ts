@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt'
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { UserStatus } from './enums/users.enums';
+import { UsersQueryOptionsDto } from './dto/query-options.dto';
 
 @Injectable()
 export class UsersService {
@@ -34,8 +35,28 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findAllByCommunityId(id: string, paginationDto: PaginationDto) {
-    return await this.userModel.paginate({ community: id }, paginationDto);
+  async findAllByCommunityId(id: string, queryOptionsDto: UsersQueryOptionsDto) {
+    const { limit = 10, page = 1, name, dni, includeLocation = false } = queryOptionsDto;
+
+    return await this.userModel.paginate(
+      {
+        community: id,
+        ...(dni ? { dni } : {}),
+        ...(name ? { name: new RegExp(name, 'i') } : {}),
+      },
+      {
+        limit,
+        page,
+        select: '-__v',
+        ...(includeLocation ? {
+          populate: {
+            path: 'location',
+            select: 'name _id'
+          }
+        } : {})
+
+      }
+    )
   }
 
   async findOne(id: string) {
