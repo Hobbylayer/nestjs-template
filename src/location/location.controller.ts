@@ -23,7 +23,7 @@ export class LocationController {
     return this.locationService.create(createLocationDto);
   }
 
-  @Get(':id')
+  @Get('/community/:id')
   findAllByCummunityId(
     @Param('id', ParseMongoIdPipe) id: string,
     @Query() paginationDto: PaginationDto,
