@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -68,6 +68,17 @@ export class UsersService {
   async findOneByEmail(email: string) {
     const user = await this.userModel.findOne({ email, status: UserStatus.ACTIVE }).select('_id name email password roles')
     return user
+  }
+
+  async byName (communityId: string, name: string) {
+    const result = await this.userModel.paginate({
+      $and: [{ name: new RegExp(name, 'i') }, { community: communityId }],
+    });
+
+    if (!result)
+      throw new NotFoundException('User not found');
+
+    return result;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

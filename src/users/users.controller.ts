@@ -27,6 +27,14 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @Get(':id/by-name/:name')
+  findByName(
+    @Param('name') name: string,
+    @Param('id', ParseMongoIdPipe) communityId: string
+  ) {
+    return this.usersService.byName(communityId, name);
+  }
+
   @Get('community/:id')
   findAllByCommunityId(
     @Param('id', ParseMongoIdPipe) id: string,
