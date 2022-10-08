@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt'
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { UserStatus } from './enums/users.enums';
+import { Roles, UserStatus } from './enums/users.enums';
 import { UsersQueryOptionsDto } from './dto/query-options.dto';
 
 @Injectable()
@@ -19,6 +19,11 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
+    const { location, roles } = createUserDto
+
+    if (!location && roles.includes(Roles.RESIDENT)) {
+      throw new BadRequestException('Locations is required for resident role')
+    }
 
     const emailAndDniExist = await this.userModel.findOne({
       $or: [{ email: createUserDto.email }, { dni: createUserDto.dni }],

@@ -39,7 +39,6 @@ export class CreateUserDto {
 
     @IsArray()
     @IsEnum(Roles, { each: true })
-    @IsOptional()
     readonly roles: Roles[];
 
     @IsUrl()
@@ -50,5 +49,6 @@ export class CreateUserDto {
     readonly community: Types.ObjectId;
 
     @IsMongoId()
-    readonly location: Types.ObjectId
+    @IsOptional()
+    readonly location?: Types.ObjectId
 }
