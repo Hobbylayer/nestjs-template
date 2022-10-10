@@ -22,6 +22,7 @@ import { CommonAreasModule } from './common-areas/common-areas.module';
 import { DebtorsModule } from './debtors/debtors.module';
 import { AuthModule } from './auth/auth.module';
 import { NewsModule } from './news/news.module';
+import { PaymethodsModule } from './paymethods/paymethods.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { NewsModule } from './news/news.module';
     DebtorsModule,
     AuthModule,
     NewsModule,
+    PaymethodsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
