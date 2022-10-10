@@ -9,7 +9,7 @@ export class CommonArea extends Document {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: true, type: Types.ObjectId })
+  @Prop({ required: true, type: Types.ObjectId, index: true })
   community: Types.ObjectId;
 }
 

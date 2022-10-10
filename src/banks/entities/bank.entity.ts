@@ -21,7 +21,7 @@ export class Bank extends Document {
     @Prop({ type: String })
     balance: string
 
-    @Prop({ type: Types.ObjectId, required: true })
+    @Prop({ type: Types.ObjectId, required: true, index: true })
     community: Types.ObjectId
 
     @Prop({ type: String, default: STATUS_DOCUMENT.ACTIVE, enum: STATUS_DOCUMENT })

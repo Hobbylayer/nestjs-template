@@ -57,7 +57,7 @@ export class Payment extends Document {
     @Prop({ type: String, enum: PaymentStatus, default: PaymentStatus.PENDING })
     status: PaymentStatus
 
-    @Prop({ type: Types.ObjectId, required: true })
+    @Prop({ type: Types.ObjectId, required: true, index: true })
     community: Types.ObjectId;
 
     @Prop({ type: Types.ObjectId, required: false }) // required only income payment

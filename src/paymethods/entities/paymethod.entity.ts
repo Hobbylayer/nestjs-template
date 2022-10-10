@@ -11,6 +11,9 @@ export class Paymethod extends Document {
     @Prop({ type: String, required: true })
     readonly name: string
 
+    @Prop({ type: Types.ObjectId, required: true, index: true })
+    readonly community: string
+
     @Prop({ type: String, required: true })
     readonly description: string
 

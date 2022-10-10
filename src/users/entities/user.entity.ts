@@ -33,7 +33,7 @@ export class User extends Document {
     @Prop()
     urlAvatar: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'Community' })
+    @Prop({ type: Types.ObjectId, ref: 'Community', index: true })
     community: Types.ObjectId;
 
     @Prop({ type: Types.ObjectId, ref: 'Location' })

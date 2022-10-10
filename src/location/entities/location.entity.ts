@@ -14,7 +14,7 @@ export class Location extends Document {
     @Prop({ type: String })
     description: string
 
-    @Prop({ required: true, ref: 'Community' })
+    @Prop({ required: true, ref: 'Community', index: true })
     community: string;
 
     @Prop({ type: Types.ObjectId, ref: 'User' })
