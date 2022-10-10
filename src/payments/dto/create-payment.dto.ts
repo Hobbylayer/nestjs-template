@@ -9,59 +9,62 @@ import {
 } from "class-validator";
 import { Types } from "mongoose";
 import { PaymentConcept } from "src/common/enums/common.enums";
-import { KindPayment, PaymentStatus, Paymethod } from "../enums/enums.payments";
+import { KindPayment as PaymentKind, PaymentStatus, Paymethod } from "../enums/enums.payments";
 
 export class CreatePaymentDto {
 
     @IsISO8601()
-    date: string;
+    readonly date: string;
 
-    @IsEnum(KindPayment)
-    @IsOptional()
-    kind: KindPayment;
+    @IsEnum(PaymentKind)
+    readonly kind: PaymentKind;
 
     @IsEnum(Paymethod)
-    paymethod: Paymethod;
+    readonly paymethod: Paymethod;
 
     @IsString()
     @IsOptional()
     @MaxLength(300)
-    description: string;
-
-    @IsMongoId()
-    resident: Types.ObjectId;
-
-    @IsMongoId()
-    location: Types.ObjectId
+    readonly description: string;
 
     @IsMongoId()
     @IsOptional()
-    bank: string;
+    readonly resident?: Types.ObjectId;
+
+    @IsMongoId()
+    @IsOptional()
+    readonly contact?: Types.ObjectId;
+
+    @IsMongoId()
+    readonly location?: Types.ObjectId
+
+    @IsMongoId()
+    readonly bank: string;
 
     @IsString()
     @IsOptional()
-    currency: string;
+    readonly currency: string;
 
     @IsPositive()
-    amount: number;
+    readonly amount: number;
 
     @IsString()
     @IsOptional()
-    referenceCode: string;
+    readonly referenceCode: string;
 
     @IsMongoId()
-    community: Types.ObjectId;
+    readonly community: Types.ObjectId;
 
     @IsMongoId()
-    paymentRequest: string
+    @IsOptional()
+    readonly paymentRequest?: string
 
     @IsEnum(PaymentConcept)
     @IsString()
-    @IsOptional()
-    concept: PaymentConcept;
+    readonly concept: PaymentConcept;
 
     @IsEnum(PaymentStatus)
     @IsString()
     @IsOptional()
-    status: PaymentStatus.APPROVED | PaymentStatus.PENDING | PaymentStatus.VOID
+    readonly status: PaymentStatus
 }

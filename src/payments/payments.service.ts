@@ -11,7 +11,7 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { QueryParamsPayments } from './dto/query-params-payments.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { Payment } from './entities/payment.entity';
-import { PaymentStatus } from './enums/enums.payments';
+import { KindPayment, PaymentStatus } from './enums/enums.payments';
 
 @Injectable()
 export class PaymentsService {
@@ -24,17 +24,34 @@ export class PaymentsService {
   ) { }
 
   async create(createPaymentDto: CreatePaymentDto) {
+
+    const { community, kind } = createPaymentDto
+
+    if (kind === KindPayment.EXPENSE) {
+      this.expenseValidate(createPaymentDto)
+    }
+
+    if (kind === KindPayment.INCOME) {
+      this.incomeValidate(createPaymentDto)
+    }
+
     const totalPayment = await this.paymentModel.find({
-      community: createPaymentDto.community
+      $and: [{ community }, { kind }]
     }).count()
 
     const number = this.createNumbering(totalPayment)
-    const payment = await this.paymentModel.create({
-      number,
-      ...createPaymentDto
-    })
 
-    return payment
+    try {
+
+      const payment = await this.paymentModel.create({
+        number,
+        ...createPaymentDto
+      });
+
+      return payment
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async findAllByCommunity(id: string, queryParams: QueryParamsPayments) {
@@ -111,9 +128,10 @@ export class PaymentsService {
   async reconciliate(id: string) {
 
     const payment = await this.paymentModel.findOne({ _id: id })
-    if (payment.status === PaymentStatus.APPROVED) throw new BadRequestException('Este pago ya ha sido conciliado')
 
-
+    if (!payment) throw new BadRequestException('This payment no registered')
+    if (payment.kind === KindPayment.EXPENSE) throw new BadRequestException('Payment is expense, only accept income')
+    if (payment.status === PaymentStatus.APPROVED) throw new BadRequestException('This payment already reconciliate')
 
     const paymentRequest = await this.paymentRequestModel.findOne({
       _id: new Types.ObjectId(payment.paymentRequest)
@@ -156,7 +174,7 @@ export class PaymentsService {
     const paymentNumberString = payment.toString();
     const paymentNumberLength = paymentNumberString.length;
     let paymentNumberStringPadded = '';
-    for (let i = 0; i < 4 - paymentNumberLength; i++) {
+    for (let i = 0; i < 6 - paymentNumberLength; i++) {
       paymentNumberStringPadded += '0';
     }
     return paymentNumberStringPadded + paymentNumberString;
@@ -165,5 +183,18 @@ export class PaymentsService {
   errorHandler(error: any) {
     if (error.name === 'CastError') throw new BadRequestException(error)
     throw new InternalServerErrorException(error)
+  }
+  incomeValidate({ resident, location, referenceCode, status }: CreatePaymentDto) {
+    if (!resident) throw new BadRequestException('Resident is required')
+    if (!location) throw new BadRequestException('Locations is required')
+    if (!referenceCode) throw new BadRequestException('referenceCode is required')
+    if (status) {
+      if (status !== PaymentStatus.PENDING) throw new BadRequestException('Payment only must to create with pending status')
+    }
+  }
+
+  expenseValidate({ contact, status }: CreatePaymentDto) {
+    if (!contact) throw new BadRequestException('Contact is required')
+    if (status !== PaymentStatus.APPROVED) throw new BadRequestException('Status is required')
   }
 }

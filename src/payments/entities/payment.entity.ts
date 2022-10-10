@@ -13,7 +13,7 @@ export class Payment extends Document {
     @Prop({ type: Date, required: true })
     date: Date;
 
-    @Prop({ type: String, required: true })
+    @Prop({ type: String, required: true, index: true })
     number: string;
 
     @Prop({
@@ -33,13 +33,16 @@ export class Payment extends Document {
     @Prop({ type: String })
     description: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'User' })
-    resident: Types.ObjectId;
+    @Prop({ type: Types.ObjectId, ref: 'User', required: false }) // required only income payment
+    resident?: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId, ref: 'Location' })
-    location: Types.ObjectId;
+    @Prop({ type: Types.ObjectId, ref: 'Contact', required: false }) // required only expense payment
+    contact?: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId, ref: 'Bank' })
+    @Prop({ type: Types.ObjectId, ref: 'Location', required: false }) // required only income payment
+    location?: Types.ObjectId;
+
+    @Prop({ type: Types.ObjectId, ref: 'Bank', required: true })
     bank: Types.ObjectId;
 
     @Prop({ type: String, default: 'USD' })
@@ -57,21 +60,19 @@ export class Payment extends Document {
     @Prop({ type: Types.ObjectId, required: true })
     community: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId })
-    paymentRequest: Types.ObjectId;
-
+    @Prop({ type: Types.ObjectId, required: false }) // required only income payment
+    paymentRequest?: Types.ObjectId;
 
     @Prop({
         required: true,
         enum: PaymentConcept,
-        default: PaymentConcept.MONTHLY_PAYMENT
     })
     concept: PaymentConcept;
 
     @Prop({
         type: Number
     })
-    exchangeRate: Number
+    exchangeRate: Types.Decimal128
 
     @Prop({
         type: String
@@ -79,16 +80,22 @@ export class Payment extends Document {
     mainCurrencyAmount: string
 
     @Prop({
-        type: Types.ObjectId,
-        ref: 'User'
+        type: String,
+        required: false
     })
-    createdBy: string;
+    comments?: string
 
     @Prop({
         type: Types.ObjectId,
         ref: 'User'
     })
-    updatedBy: Types.ObjectId
+    createdBy?: string;
+
+    @Prop({
+        type: Types.ObjectId,
+        ref: 'User'
+    })
+    updatedBy?: Types.ObjectId
 }
 
 
