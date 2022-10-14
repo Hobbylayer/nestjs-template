@@ -13,7 +13,7 @@ export class PaymentsRequest extends Document {
     @Prop({ type: String })
     concept: string
 
-    @Prop({ type: Types.ObjectId, required: true })
+    @Prop({ type: Types.ObjectId, required: true, index: true })
     community: Types.ObjectId
 
     @Prop({ type: Types.ObjectId })
