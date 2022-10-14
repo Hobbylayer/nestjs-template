@@ -27,4 +27,11 @@ export class ReportsController {
   remove(@Param('id') id: string) {
     return this.reportsService.remove(id);
   }
+
+  @Get('community-earnings/by-bank/:bankId')
+  earningsByBank(
+    @Param('bankId', ParseMongoIdPipe) id: string
+  ) {
+    return this.reportsService.earningsByBank(id);
+  }
 }
