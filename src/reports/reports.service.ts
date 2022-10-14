@@ -28,6 +28,26 @@ export class ReportsService {
   remove(id: string) {
     return `This action removes a #${id} report`;
   }
+  
+  async earningsByCommunity (communityId): Promise<{
+    earnings: number,
+  }> {
+    const incomeEarning = await this.paymentModel.find({
+      community: communityId,
+      kind: KindPayment.INCOME,
+      status: PaymentStatus.APPROVED
+    }).count();
+
+    const expensesCount = await this.paymentModel.find({
+      community: communityId,
+      kind: KindPayment.EXPENSE,
+      status: PaymentStatus.APPROVED,
+    }).count();
+
+    return {
+      earnings: incomeEarning - expensesCount,
+    }
+  }
 
   async earningsByBank(bankId: string): Promise<{
     earnings: number,
