@@ -29,43 +29,95 @@ export class ReportsService {
     return `This action removes a #${id} report`;
   }
   
-  async earningsByCommunity (communityId): Promise<{
-    earnings: number,
-  }> {
-    const incomeEarning = await this.paymentModel.find({
-      community: communityId,
-      kind: KindPayment.INCOME,
-      status: PaymentStatus.APPROVED
-    }).count();
+  async earningsByCommunity (communityId) {
+    const incomeEarnings = await this.paymentModel.aggregate([
+      {
+        $match: {
+          kind: KindPayment.INCOME,
+          status: PaymentStatus.APPROVED,
+          community: communityId
+        }
+      },
+      {
+        $group: {
+          _id: "$kind",
+          totalAmount: {
+            $sum: "$amount"
+          }
+        }
+      }
+    ]).exec();
 
-    const expensesCount = await this.paymentModel.find({
-      community: communityId,
-      kind: KindPayment.EXPENSE,
-      status: PaymentStatus.APPROVED,
-    }).count();
+    const expensesEarnings = await this.paymentModel.aggregate([
+      {
+        $match: {
+          kind: KindPayment.EXPENSE,
+          status: PaymentStatus.APPROVED,
+          community: communityId
+        }
+      },
+      {
+        $group: {
+          _id: "$kind",
+          totalAmount: {
+            $sum: "$amount"
+          }
+        }
+      }
+    ]).exec();
+
+    const incomes = incomeEarnings.length > 0 ? incomeEarnings[0].totalAmount : 0;
+    const expenses = expensesEarnings.length > 0 ? expensesEarnings[0].totalAmount : 0;
 
     return {
-      earnings: incomeEarning - expensesCount,
+      earnings: incomes - expenses
     }
   }
 
   async earningsByBank(bankId: string): Promise<{
     earnings: number,
   }> {
-    const incomeEarning = await this.paymentModel.find({
-      bank: bankId,
-      kind: KindPayment.INCOME,
-      status: PaymentStatus.APPROVED
-    }).count();
+    const incomeEarnings = await this.paymentModel.aggregate([
+      {
+        $match: {
+          kind: KindPayment.INCOME,
+          status: PaymentStatus.APPROVED,
+          bank: bankId
+        }
+      },
+      {
+        $group: {
+          _id: "$kind",
+          totalAmount: {
+            $sum: "$amount"
+          }
+        }
+      }
+    ]).exec();
 
-    const expensesCount = await this.paymentModel.find({
-      bank: bankId,
-      kind: KindPayment.EXPENSE,
-      status: PaymentStatus.APPROVED,
-    }).count();
+    const expensesEarnings = await this.paymentModel.aggregate([
+      {
+        $match: {
+          kind: KindPayment.EXPENSE,
+          status: PaymentStatus.APPROVED,
+          bank: bankId
+        }
+      },
+      {
+        $group: {
+          _id: "$kind",
+          totalAmount: {
+            $sum: "$amount"
+          }
+        }
+      }
+    ]).exec();
+
+    const incomes = incomeEarnings.length > 0 ? incomeEarnings[0].totalAmount : 0;
+    const expenses = expensesEarnings.length > 0 ? expensesEarnings[0].totalAmount : 0;
 
     return {
-      earnings: incomeEarning - expensesCount,
+      earnings: incomes - expenses
     }
   }
 }
