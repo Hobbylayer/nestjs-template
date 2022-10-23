@@ -7,6 +7,8 @@ enum FieldPayment {
     RESIDENT = 'resident'
 }
 
+export type PaymentKind = 'expense' | 'income'
+
 export class QueryParamsPayments extends PaginationDto {
 
     @IsMongoId()
@@ -26,6 +28,10 @@ export class QueryParamsPayments extends PaginationDto {
     @IsString()
     @IsOptional()
     fields: string
+
+    @IsString()
+    @IsOptional()
+    kind: PaymentKind
 
     @IsString()
     @IsOptional()
