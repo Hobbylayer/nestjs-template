@@ -63,12 +63,14 @@ export class PaymentsService {
       payment_status: status,
       number,
       includeAllField = false,
-      fields
+      fields,
+      kind,
     } = queryParams
 
 
     const payments = await this.paymentModel.paginate({
       community: id,
+      ...(kind ? { kind } : {}),
       ...(number ? { number } : {}),
       ...(location ? { location } : {}),
       ...(status ? { status } : {}),
