@@ -70,7 +70,7 @@ export class PaymentsService {
 
     const payments = await this.paymentModel.paginate({
       community: id,
-      kind,
+      ...(kind ? { kind } : {}),
       ...(number ? { number } : {}),
       ...(location ? { location } : {}),
       ...(status ? { status } : {}),
