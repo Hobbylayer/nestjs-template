@@ -50,7 +50,7 @@ export class CreatePaymentDto {
 
     @IsString()
     @IsOptional()
-    readonly referenceCode: string;
+    readonly referenceCode?: string;
 
     @IsMongoId()
     readonly community: Types.ObjectId;
