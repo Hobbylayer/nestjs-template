@@ -1,4 +1,4 @@
-import { IsMongoId, IsString } from 'class-validator'
+import { IsMongoId, IsOptional, IsString } from 'class-validator'
 
 export class CreateLocationDto {
 
@@ -9,4 +9,7 @@ export class CreateLocationDto {
     @IsMongoId()
     readonly community: string;
 
+    @IsMongoId()
+    @IsOptional()
+    readonly residentId?: string
 }

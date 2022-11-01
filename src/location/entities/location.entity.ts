@@ -17,10 +17,10 @@ export class Location extends Document {
     @Prop({ required: true, ref: 'Community', index: true })
     community: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'User' })
+    @Prop({ type: Types.ObjectId, ref: 'User', default: null })
     residentId: string
 
-    @Prop({ type: Types.ObjectId, ref: 'User' })
+    @Prop({ type: Types.ObjectId, ref: 'User', default: null })
     ownerId: string
 
     @Prop({ type: Types.ObjectId, ref: 'User' })

@@ -77,6 +77,7 @@ export class LocationService {
       id,
       {
         name: updateLocationDto.name,
+        residentId: updateLocationDto.residentId
       },
       { new: true },
     );
