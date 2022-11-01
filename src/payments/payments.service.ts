@@ -196,7 +196,9 @@ export class PaymentsService {
   }
 
   expenseValidate({ contact, status }: CreatePaymentDto) {
-    if (!contact) throw new BadRequestException('Contact is required')
+
+    //TODO activate whe contact module is already
+    // if (!contact) throw new BadRequestException('Contact is required')
     if (status !== PaymentStatus.APPROVED) throw new BadRequestException('Status is required')
   }
 }
