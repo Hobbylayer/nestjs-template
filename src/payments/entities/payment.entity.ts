@@ -1,4 +1,4 @@
-import { Document, Types } from 'mongoose'
+import { Document, Types, Date } from 'mongoose'
 import {
     Prop,
     Schema,
@@ -10,8 +10,8 @@ import { PaymentConcept } from 'src/common/enums/common.enums';
 @Schema({ timestamps: true })
 export class Payment extends Document {
 
-    @Prop({ type: Date, required: true })
-    date: Date;
+    @Prop({ type: String, required: true })
+    date: string;
 
     @Prop({ type: String, required: true, index: true })
     number: string;
