@@ -1,13 +1,13 @@
-import { IsBoolean, IsEnum, IsMongoId, IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsEnum, IsISO8601, IsMongoId, IsOptional, IsString } from "class-validator"
 import { PaginationDto } from "src/common/dto/pagination.dto"
 import { PaymentStatus } from "../enums/enums.payments"
 
-enum FieldPayment {
-    LOCATION = 'location',
-    RESIDENT = 'resident'
-}
 
 export type PaymentKind = 'expense' | 'income'
+export enum DateSearchType {
+    PAYMENT_DATE = 'payment_date',
+    CREATE_AT_DATE = 'create_at_date'
+}
 
 export class QueryParamsPayments extends PaginationDto {
 
@@ -36,4 +36,21 @@ export class QueryParamsPayments extends PaginationDto {
     @IsString()
     @IsOptional()
     number: string
+
+    @IsString()
+    @IsOptional()
+    description?: string
+
+    @IsEnum(DateSearchType)
+    @IsOptional()
+    findDateBy?: DateSearchType
+
+    @IsISO8601()
+    @IsOptional()
+    startDate?: string
+
+
+    @IsISO8601()
+    @IsOptional()
+    endDate?: string
 }

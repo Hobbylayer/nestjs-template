@@ -8,7 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, Types } from 'mongoose';
 import { PaymentsRequest } from 'src/payments-requests/entities/payments-request.entity';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { QueryParamsPayments } from './dto/query-params-payments.dto';
+import { DateSearchType, QueryParamsPayments } from './dto/query-params-payments.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { Payment } from './entities/payment.entity';
 import { KindPayment, PaymentStatus } from './enums/enums.payments';
@@ -65,7 +65,37 @@ export class PaymentsService {
       includeAllField = false,
       fields,
       kind,
+      description,
+      startDate,
+      endDate,
+      findDateBy
     } = queryParams
+
+    const findByCreateAt = () => {
+      return {
+        createAt: {
+          $gte: startDate,
+          $lte: endDate,
+        }
+      }
+    }
+    const findByPaymentDate = () => {
+      return {
+        date: {
+          $gte: startDate,
+          $lte: endDate,
+        }
+      }
+    }
+
+    const findDateByDateRange = (kind: DateSearchType) => {
+      if (kind === DateSearchType.CREATE_AT_DATE) {
+        return findByCreateAt()
+      }
+      if (kind === DateSearchType.PAYMENT_DATE) {
+        return findByPaymentDate()
+      }
+    }
 
 
     const payments = await this.paymentModel.paginate({
@@ -74,6 +104,10 @@ export class PaymentsService {
       ...(number ? { number } : {}),
       ...(location ? { location } : {}),
       ...(status ? { status } : {}),
+      ...(description ? { description: new RegExp(description, 'i') } : {}),
+      ...(findDateBy ? {
+        ...findDateByDateRange(findDateBy)
+      } : {})
     }, {
       limit,
       page,
@@ -195,7 +229,7 @@ export class PaymentsService {
     }
   }
 
-  expenseValidate({ contact, status }: CreatePaymentDto) {
+  expenseValidate({ status }: CreatePaymentDto) {
 
     //TODO activate whe contact module is already
     // if (!contact) throw new BadRequestException('Contact is required')
