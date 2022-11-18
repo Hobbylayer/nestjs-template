@@ -220,7 +220,8 @@ export class PaymentsService {
     if (error.name === 'CastError') throw new BadRequestException(error)
     throw new InternalServerErrorException(error)
   }
-  incomeValidate({ resident, location, referenceCode, status, paymethod }: CreatePaymentDto) {
+  incomeValidate({ bank, resident, location, referenceCode, status, paymethod }: CreatePaymentDto) {
+		if (!bank) throw new BadRequestException('Bank is required')
     if (!resident) throw new BadRequestException('Resident is required')
     if (!location) throw new BadRequestException('Locations is required')
     if (!referenceCode && paymethod !== 'cash') throw new BadRequestException('referenceCode is required')
