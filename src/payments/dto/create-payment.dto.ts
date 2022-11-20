@@ -39,7 +39,6 @@ export class CreatePaymentDto {
     readonly location?: Types.ObjectId
 
     @IsMongoId()
-		@IsOptional()
     readonly bank: string;
 
     @IsString()
