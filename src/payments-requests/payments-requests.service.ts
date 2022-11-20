@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, Types } from 'mongoose'
+import { PaginateModel, Types } from 'mongoose';
 import { STATUS_DOCUMENT } from 'src/common/enums/common.enums';
 import { Location } from 'src/location/entities/location.entity';
 import { Payment } from 'src/payments/entities/payment.entity';
@@ -9,9 +9,9 @@ import { QueryParamsPaymentRequestDto } from './dto/query-params-payments-reques
 import { UpdatePaymentsRequestDto } from './dto/update-payments-request.dto';
 import { PaymentsRequest } from './entities/payments-request.entity';
 
-/* 
-* The payments request are debit notes created by community admin
-*/
+/*
+ * The payments request are debit notes created by community admin
+ */
 @Injectable()
 export class PaymentsRequestsService {
   constructor(
@@ -20,72 +20,90 @@ export class PaymentsRequestsService {
     @InjectModel(Payment.name)
     readonly paymentModel: PaginateModel<Payment>,
     @InjectModel(Location.name)
-    readonly locationModel: PaginateModel<Location>
-  ) { }
-
+    readonly locationModel: PaginateModel<Location>,
+  ) {}
 
   async create(createPaymentsRequestDto: CreatePaymentsRequestDto) {
-    const { community } = createPaymentsRequestDto
+    const { community } = createPaymentsRequestDto;
 
-    let locations = await this.locationModel.find({ community, status: STATUS_DOCUMENT.ACTIVE }).select('_id name')
-    locations = locations.map(({ _id }) => _id)
+    let locations = await this.locationModel
+      .find({ community, status: STATUS_DOCUMENT.ACTIVE })
+      .select('_id name');
+    locations = locations.map(({ _id }) => _id);
 
-    return await this.paymentRequestModel.create({ ...createPaymentsRequestDto, debts: locations })
+    return await this.paymentRequestModel.create({
+      ...createPaymentsRequestDto,
+      debts: locations,
+    });
   }
 
-
-  async findAllByCommunity(communityId: string, queryParams: QueryParamsPaymentRequestDto) {
-    const { sort, limit = 10, page = 1, payments_request_status: status, location, amount, concept } = queryParams
+  async findAllByCommunity(
+    communityId: string,
+    queryParams: QueryParamsPaymentRequestDto,
+  ) {
+    const {
+      sort,
+      limit = 10,
+      page = 1,
+      payments_request_status: status,
+      location,
+      amount,
+      concept,
+    } = queryParams;
     let paymetsRequests;
     if (location) {
-      paymetsRequests = await this.findByLocation(location)
+      paymetsRequests = await this.findByLocation(location);
     } else {
-      paymetsRequests = await this.paymentRequestModel.paginate({
-        community: communityId,
-        ...(status ? { status } : {}),
-        ...(amount ? { amount } : {}),
-        ...(concept ? { concept } : {})
-      }, {
-        limit,
-        page,
-        sort: {
-          createdAt: sort,
+      paymetsRequests = await this.paymentRequestModel.paginate(
+        {
+          community: communityId,
+          ...(status ? { status } : {}),
+          ...(amount ? { amount } : {}),
+          ...(concept ? { concept } : {}),
         },
-      })
+        {
+          limit,
+          page,
+          sort: {
+            createdAt: sort,
+          },
+        },
+      );
     }
 
-
-
-    return paymetsRequests
+    return paymetsRequests;
   }
 
   async findOne(id: string) {
-    const { includePayments } = { includePayments: true }
+    const { includePayments } = { includePayments: true };
     let paymentRequest: any;
     if (includePayments) {
-      paymentRequest = await this.findPaymentRequestWithPayments(id)
+      paymentRequest = await this.findPaymentRequestWithPayments(id);
     } else {
       paymentRequest = await this.paymentRequestModel
         .findOne({ _id: id })
-        .select('-payments')
+        .select('-payments');
     }
 
-    if (!paymentRequest) throw new NotFoundException
-    return paymentRequest
+    if (!paymentRequest) throw new NotFoundException();
+    return paymentRequest;
   }
 
-  async update(id: string, updatePaymentsReqquestDto: UpdatePaymentsRequestDto) {
+  async update(
+    id: string,
+    updatePaymentsReqquestDto: UpdatePaymentsRequestDto,
+  ) {
     const paymentRequest = await this.paymentRequestModel.findOneAndUpdate(
       { _id: id },
       updatePaymentsReqquestDto,
-      { new: true }
-    )
-    if (!paymentRequest) throw new NotFoundException
-    return paymentRequest
+      { new: true },
+    );
+    if (!paymentRequest) throw new NotFoundException();
+    return paymentRequest;
   }
 
   async remove(id: string) {
-    return await this.paymentRequestModel.findOneAndDelete({ _id: id })
+    return await this.paymentRequestModel.findOneAndDelete({ _id: id });
   }
 
   async findPaymentRequestWithPayments(id: string) {
@@ -95,25 +113,25 @@ export class PaymentsRequestsService {
         path: 'payments',
         populate: {
           path: 'payment',
-          select: 'number concept amount currency'
-        }
+          select: 'number concept amount currency',
+        },
       })
       .populate({
         path: 'payments',
         populate: {
           path: 'location',
-          select: 'name _id'
-        }
-      })
+          select: 'name _id',
+        },
+      });
 
-    return paymentRequest
+    return paymentRequest;
   }
   async findByLocation(id: string) {
     const paymentsRequest = await this.paymentRequestModel.paginate({
-      "debts": {
-        "$all": [new Types.ObjectId(id)]
-      }
-    })
-    return paymentsRequest
+      debts: {
+        $all: [new Types.ObjectId(id)],
+      },
+    });
+    return paymentsRequest;
   }
 }

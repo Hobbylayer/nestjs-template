@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  Put,
+} from '@nestjs/common';
 import { Types } from 'mongoose';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
@@ -8,7 +18,7 @@ import { UpdateCommunityDto } from './dto/update-community.dto';
 
 @Controller('communities')
 export class CommunitiesController {
-  constructor(private readonly communitiesService: CommunitiesService) { }
+  constructor(private readonly communitiesService: CommunitiesService) {}
 
   @Post()
   create(@Body() createCommunityDto: CreateCommunityDto) {
@@ -26,7 +36,10 @@ export class CommunitiesController {
   }
 
   @Put(':id')
-  update(@Param('id', ParseMongoIdPipe) id: string, @Body() updateCommunityDto: UpdateCommunityDto) {
+  update(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @Body() updateCommunityDto: UpdateCommunityDto,
+  ) {
     return this.communitiesService.update(id, updateCommunityDto);
   }
 

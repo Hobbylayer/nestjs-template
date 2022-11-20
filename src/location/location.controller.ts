@@ -16,7 +16,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('locations')
 export class LocationController {
-  constructor(private readonly locationService: LocationService) { }
+  constructor(private readonly locationService: LocationService) {}
 
   @Post()
   create(@Body() createLocationDto: CreateLocationDto) {

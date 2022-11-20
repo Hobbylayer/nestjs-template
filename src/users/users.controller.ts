@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  Put,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,7 +19,7 @@ import { UsersQueryOptionsDto } from './dto/query-options.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -29,7 +39,7 @@ export class UsersController {
   @Get(':id/by-name/:name')
   findByName(
     @Param('name') name: string,
-    @Param('id', ParseMongoIdPipe) communityId: string
+    @Param('id', ParseMongoIdPipe) communityId: string,
   ) {
     return this.usersService.byName(communityId, name);
   }
@@ -39,27 +49,25 @@ export class UsersController {
     @Param('id', ParseMongoIdPipe) id: string,
     @Query() QueryOptionsDto: UsersQueryOptionsDto,
   ) {
-
     return this.usersService.findAllByCommunityId(id, QueryOptionsDto);
   }
 
   @Get('user/self')
   @Auth()
-  self(
-    @GetUser(['_id']) id: string
-  ) {
-    return this.usersService.self(id)
+  self(@GetUser(['_id']) id: string) {
+    return this.usersService.self(id);
   }
 
   @Get('/total-residents/:communityId')
-  totalUserActive(
-    @Param('communityId') communityId: string
-  ) {
-    return this.usersService.totalResident(communityId)
+  totalUserActive(@Param('communityId') communityId: string) {
+    return this.usersService.totalResident(communityId);
   }
 
   @Put(':id')
-  update(@Param('id', ParseMongoIdPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.usersService.update(id, updateUserDto);
   }
 

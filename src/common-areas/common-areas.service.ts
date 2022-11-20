@@ -10,13 +10,16 @@ import { PaginateModel, Types } from 'mongoose';
 export class CommonAreasService {
   constructor(
     @InjectModel(CommonArea.name)
-    private readonly commonAreaModel: PaginateModel<CommonArea>
-  ) { }
+    private readonly commonAreaModel: PaginateModel<CommonArea>,
+  ) {}
 
   async create(createCommonAreaDto: CreateCommonAreaDto) {
     const exist: boolean = await this.existByName(createCommonAreaDto.name);
     if (exist)
-      return new HttpException('That name is already taken', HttpStatus.BAD_REQUEST);
+      return new HttpException(
+        'That name is already taken',
+        HttpStatus.BAD_REQUEST,
+      );
 
     const data = await this.commonAreaModel.create(createCommonAreaDto);
 
@@ -26,16 +29,17 @@ export class CommonAreasService {
     };
   }
 
-  async findByCommunity (communityId: Types.ObjectId) {
+  async findByCommunity(communityId: Types.ObjectId) {
     return await this.commonAreaModel.find({ community: communityId });
   }
 
   async findOne(id: Types.ObjectId) {
-    const commonArea = await this.commonAreaModel.findOne({ _id: id }).select('-__v');
-    if (!commonArea)
-      return []
+    const commonArea = await this.commonAreaModel
+      .findOne({ _id: id })
+      .select('-__v');
+    if (!commonArea) return [];
 
-    return commonArea
+    return commonArea;
   }
 
   async existByName(name: string): Promise<boolean> {
@@ -44,22 +48,26 @@ export class CommonAreasService {
       .countDocuments();
 
     // returns if there is some common area
-    return !!commonArea
+    return !!commonArea;
   }
 
-  async update (id: Types.ObjectId, updateCommonAreaDto: UpdateCommonAreaDto) {
-    const result = await this.commonAreaModel.findByIdAndUpdate(id, updateCommonAreaDto, { new: true });
+  async update(id: Types.ObjectId, updateCommonAreaDto: UpdateCommonAreaDto) {
+    const result = await this.commonAreaModel.findByIdAndUpdate(
+      id,
+      updateCommonAreaDto,
+      { new: true },
+    );
     if (!result)
-      return new HttpException('Common area not found', HttpStatus.NOT_FOUND)
+      return new HttpException('Common area not found', HttpStatus.NOT_FOUND);
 
     return result;
   }
 
-  async remove (id: Types.ObjectId) {
-    const result = await this.commonAreaModel.findOneAndDelete({ _id: id })
+  async remove(id: Types.ObjectId) {
+    const result = await this.commonAreaModel.findOneAndDelete({ _id: id });
     if (!result)
       return new HttpException('Common area not found', HttpStatus.NOT_FOUND);
 
-    return { message: 'Common area removed successfully!' }
+    return { message: 'Common area removed successfully!' };
   }
 }

@@ -12,10 +12,12 @@ import { User, UserSchema } from 'src/users/entities/user.entity';
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
   imports: [
-    MongooseModule.forFeature([{
-      name: User.name,
-      schema: UserSchema
-    }]),
+    MongooseModule.forFeature([
+      {
+        name: User.name,
+        schema: UserSchema,
+      },
+    ]),
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
@@ -26,12 +28,12 @@ import { User, UserSchema } from 'src/users/entities/user.entity';
         return {
           secret: configServices.get('JWT_SECRET'),
           signOptions: {
-            expiresIn: configServices.get('JWT_EXPIRE_IN')
-          }
-        }
-      }
+            expiresIn: configServices.get('JWT_EXPIRE_IN'),
+          },
+        };
+      },
     }),
   ],
-  exports: [JwtStrategy, PassportModule, JwtModule]
+  exports: [JwtStrategy, PassportModule, JwtModule],
 })
-export class AuthModule { }
+export class AuthModule {}

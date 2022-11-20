@@ -1,4 +1,4 @@
 export enum StatusPaymentRequest {
-    OPEN = 'open',
-    VOID = 'void'
+  OPEN = 'open',
+  VOID = 'void',
 }
