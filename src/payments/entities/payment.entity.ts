@@ -42,7 +42,7 @@ export class Payment extends Document {
     @Prop({ type: Types.ObjectId, ref: 'Location', required: false }) // required only income payment
     location?: Types.ObjectId;
 
-    @Prop({ type: Types.ObjectId, ref: 'Bank', required: false }) // required only income payment
+    @Prop({ type: Types.ObjectId, ref: 'Bank', required: true })
     bank: Types.ObjectId;
 
     @Prop({ type: String, default: 'USD' })
