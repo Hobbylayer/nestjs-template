@@ -62,6 +62,7 @@ export class PaymentsService {
       page = 1,
       sort = 'ASC',
       location,
+      resident,
       payment_status: status,
       number,
       includeAllField = false,
@@ -98,20 +99,23 @@ export class PaymentsService {
         return findByPaymentDate();
       }
     };
+    const payments = await this.paymentModel.paginate({
+      community: id,
+      ...(resident ? { resident }: {}),
+      ...(kind ? { kind } : {}),
+      ...(number ? { number } : {}),
+      ...(location ? { location } : {}),
+      ...(status ? { status } : {}),
+      ...(description ? { description: new RegExp(description, 'i') } : {}),
+      ...(findDateBy ? {
+        ...findDateByDateRange(findDateBy)
+      } : {})
+    }, {
+      limit,
+      page,
+      sort: {
+        createdAt: sort.toLocaleUpperCase()
 
-    const payments = await this.paymentModel.paginate(
-      {
-        community: id,
-        ...(kind ? { kind } : {}),
-        ...(number ? { number } : {}),
-        ...(location ? { location } : {}),
-        ...(status ? { status } : {}),
-        ...(description ? { description: new RegExp(description, 'i') } : {}),
-        ...(findDateBy
-          ? {
-              ...findDateByDateRange(findDateBy),
-            }
-          : {}),
       },
       {
         limit,

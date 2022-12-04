@@ -16,44 +16,50 @@ export enum DateSearchType {
 }
 
 export class QueryParamsPayments extends PaginationDto {
-  @IsMongoId()
-  @IsOptional()
-  location: string;
+    @IsMongoId()
+    @IsOptional()
+    resident: string
 
-  @IsEnum(PaymentStatus)
-  @IsString()
-  @IsOptional()
-  payment_status: PaymentStatus;
+    @IsMongoId()
+    @IsOptional()
+    location: string
 
-  @IsBoolean()
-  @IsOptional()
-  includeAllField: boolean;
+    @IsEnum(PaymentStatus)
+    @IsString()
+    @IsOptional()
+    payment_status: PaymentStatus
 
-  @IsString()
-  @IsOptional()
-  fields: string;
+    @IsBoolean()
+    @IsOptional()
+    includeAllField: boolean
 
-  @IsString()
-  @IsOptional()
-  kind: PaymentKind;
 
-  @IsString()
-  @IsOptional()
-  number: string;
+    @IsString()
+    @IsOptional()
+    fields: string
 
-  @IsString()
-  @IsOptional()
-  description?: string;
+    @IsString()
+    @IsOptional()
+    kind: PaymentKind
 
-  @IsEnum(DateSearchType)
-  @IsOptional()
-  findDateBy?: DateSearchType;
+    @IsString()
+    @IsOptional()
+    number: string
 
-  @IsISO8601()
-  @IsOptional()
-  startDate?: string;
+    @IsString()
+    @IsOptional()
+    description?: string
 
-  @IsISO8601()
-  @IsOptional()
-  endDate?: string;
+    @IsEnum(DateSearchType)
+    @IsOptional()
+    findDateBy?: DateSearchType
+
+    @IsISO8601()
+    @IsOptional()
+    startDate?: string
+
+
+    @IsISO8601()
+    @IsOptional()
+    endDate?: string
 }
