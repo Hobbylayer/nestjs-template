@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 import { BanksService } from './banks.service';
@@ -7,7 +16,7 @@ import { UpdateBankDto } from './dto/update-bank.dto';
 
 @Controller('banks-accounts')
 export class BanksController {
-  constructor(private readonly banksService: BanksService) { }
+  constructor(private readonly banksService: BanksService) {}
 
   @Post()
   create(@Body() createBankDto: CreateBankDto) {
@@ -17,7 +26,7 @@ export class BanksController {
   @Get('community/:id')
   findAll(
     @Param('id', ParseMongoIdPipe) communityId: string,
-    @Query() paginateDto: PaginationDto
+    @Query() paginateDto: PaginationDto,
   ) {
     return this.banksService.findAll(communityId, paginateDto);
   }
@@ -28,10 +37,7 @@ export class BanksController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateBankDto: UpdateBankDto
-  ) {
+  update(@Param('id') id: string, @Body() updateBankDto: UpdateBankDto) {
     return this.banksService.update(id, updateBankDto);
   }
 

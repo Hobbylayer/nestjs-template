@@ -13,12 +13,12 @@ import * as mongoosePaginate from 'mongoose-paginate-v2';
       {
         name: CommonArea.name,
         useFactory: () => {
-          const schema = CommonAreaSchema
-          schema.plugin(mongoosePaginate)
-          return schema
-        }
-      }
-    ])
-  ]
+          const schema = CommonAreaSchema;
+          schema.plugin(mongoosePaginate);
+          return schema;
+        },
+      },
+    ]),
+  ],
 })
 export class CommonAreasModule {}

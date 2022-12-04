@@ -8,65 +8,86 @@ import { Community } from './entities/community.entity';
 
 @Injectable()
 export class CommunitiesService {
-
   constructor(
     @InjectModel(Community.name)
-    private readonly communityModel: PaginateModel<Community>
-  ) { }
+    private readonly communityModel: PaginateModel<Community>,
+  ) {}
 
   async create(createCommunityDto: CreateCommunityDto) {
-
-    const exist = await this.existEmail(createCommunityDto.email)
-    if (exist) return new HttpException('Email already exists', HttpStatus.BAD_REQUEST)
-    const totalCommunities = await this.communityModel.find({}).count()
-    const code = this.createCode(totalCommunities)
-    const data = await this.communityModel.create({ code, ...createCommunityDto })
+    const exist = await this.existEmail(createCommunityDto.email);
+    if (exist)
+      return new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+    const totalCommunities = await this.communityModel.find({}).count();
+    const code = this.createCode(totalCommunities);
+    const data = await this.communityModel.create({
+      code,
+      ...createCommunityDto,
+    });
     return {
       message: 'Community created successfully',
-      data
-    }
-
+      data,
+    };
   }
 
   async findAll({ limit = 4, page = 1 }: PaginationDto) {
-    return await this.communityModel.paginate({}, { page, limit })
+    return await this.communityModel.paginate({}, { page, limit });
   }
 
   async findOne(id: Types.ObjectId) {
-    const community = await this.communityModel.findOne({ _id: id }).select('-__v')
-    if (!community) return []
-    return community
+    const community = await this.communityModel
+      .findOne({ _id: id })
+      .select('-__v');
+    if (!community) return [];
+    return community;
   }
 
   async existEmail(email: string) {
-    const community = await this.communityModel.findOne({ email }).countDocuments()
-    if (!community) return false
-    return true
+    const community = await this.communityModel
+      .findOne({ email })
+      .countDocuments();
+    if (!community) return false;
+    return true;
   }
 
   async update(id: string, updateCommunityDto: UpdateCommunityDto) {
-    const result = await this.communityModel.findByIdAndUpdate(id, updateCommunityDto, { new: true })
-    if (!result) return new HttpException('Community not found', HttpStatus.NOT_FOUND)
-    return result
+    const result = await this.communityModel.findByIdAndUpdate(
+      id,
+      updateCommunityDto,
+      { new: true },
+    );
+    if (!result)
+      return new HttpException('Community not found', HttpStatus.NOT_FOUND);
+    return result;
   }
 
   async remove(id: string) {
-    const result = await this.communityModel.findOneAndDelete({ _id: id })
-    if (!result) return new HttpException('Community not found', HttpStatus.NOT_FOUND)
+    const result = await this.communityModel.findOneAndDelete({ _id: id });
+    if (!result)
+      return new HttpException('Community not found', HttpStatus.NOT_FOUND);
     return {
       message: 'Community deleted successfully',
-    }
+    };
   }
 
   async activate(id: string) {
-    const result = await this.communityModel.findByIdAndUpdate(id, { status: 'active' }, { new: true })
-    if (!result) return new HttpException('Community not found', HttpStatus.NOT_FOUND)
-    return result
+    const result = await this.communityModel.findByIdAndUpdate(
+      id,
+      { status: 'active' },
+      { new: true },
+    );
+    if (!result)
+      return new HttpException('Community not found', HttpStatus.NOT_FOUND);
+    return result;
   }
   async deactivate(id: string) {
-    const result = await this.communityModel.findByIdAndUpdate(id, { status: 'deactive' }, { new: true })
-    if (!result) return new HttpException('Community not found', HttpStatus.NOT_FOUND)
-    return result
+    const result = await this.communityModel.findByIdAndUpdate(
+      id,
+      { status: 'deactive' },
+      { new: true },
+    );
+    if (!result)
+      return new HttpException('Community not found', HttpStatus.NOT_FOUND);
+    return result;
   }
   createCode(totalRegisters) {
     const code = totalRegisters + 1;
@@ -78,6 +99,5 @@ export class CommunitiesService {
     }
     return codeStringPadded + codeString;
   }
-  handleExeption(error: Error) { }
-
+  handleExeption(error: Error) {}
 }

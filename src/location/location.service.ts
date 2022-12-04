@@ -16,7 +16,7 @@ export class LocationService {
   constructor(
     @InjectModel(Location.name)
     private readonly locationModel: PaginateModel<Location>,
-  ) { }
+  ) {}
 
   async create(createLocationDto: CreateLocationDto) {
     const result = await this.existLocation(
@@ -49,11 +49,11 @@ export class LocationService {
   }
 
   async findOneById(id: string) {
-    const result = await this.locationModel.findOne({ _id: id })
+    const result = await this.locationModel.findOne({ _id: id });
 
-    if (!result) throw new NotFoundException('Locations no encontrada')
+    if (!result) throw new NotFoundException('Locations no encontrada');
 
-    return result
+    return result;
   }
 
   async findByName(communityId: string, name: string) {
@@ -77,7 +77,7 @@ export class LocationService {
       id,
       {
         name: updateLocationDto.name,
-        residentId: updateLocationDto.residentId
+        residentId: updateLocationDto.residentId,
       },
       { new: true },
     );

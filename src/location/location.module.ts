@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { LocationService } from './location.service';
 import { LocationController } from './location.controller';
-import { MongooseModule } from '@nestjs/mongoose'
+import { MongooseModule } from '@nestjs/mongoose';
 import { LocationSchema, Location } from './entities/location.entity';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 @Module({
@@ -9,17 +9,15 @@ import * as mongoosePaginate from 'mongoose-paginate-v2';
   providers: [LocationService],
   imports: [
     MongooseModule.forFeatureAsync([
-
       {
         name: Location.name,
         useFactory: () => {
           const schema = LocationSchema;
-          schema.plugin(mongoosePaginate)
-          return schema
-        }
-      }
-
-    ])
+          schema.plugin(mongoosePaginate);
+          return schema;
+        },
+      },
+    ]),
   ],
 })
-export class LocationModule { }
+export class LocationModule {}

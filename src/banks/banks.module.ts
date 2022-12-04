@@ -3,7 +3,7 @@ import { BanksService } from './banks.service';
 import { BanksController } from './banks.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Bank, BanksSchema } from './entities/bank.entity';
-import * as mongoosePaginate from 'mongoose-paginate-v2'
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 @Module({
   controllers: [BanksController],
@@ -13,12 +13,12 @@ import * as mongoosePaginate from 'mongoose-paginate-v2'
       {
         name: Bank.name,
         useFactory: () => {
-          const schema = BanksSchema
-          schema.plugin(mongoosePaginate)
-          return schema
-        }
-      }
+          const schema = BanksSchema;
+          schema.plugin(mongoosePaginate);
+          return schema;
+        },
+      },
     ]),
-  ]
+  ],
 })
-export class BanksModule { }
+export class BanksModule {}

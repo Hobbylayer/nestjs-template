@@ -3,7 +3,7 @@ import { NewsService } from './news.service';
 import { NewsController } from './news.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { New, NewSchema } from './entities/news.entity';
-import * as moongoosePaginate from 'mongoose-paginate-v2'
+import * as moongoosePaginate from 'mongoose-paginate-v2';
 
 @Module({
   controllers: [NewsController],
@@ -14,12 +14,12 @@ import * as moongoosePaginate from 'mongoose-paginate-v2'
         name: New.name,
         useFactory: () => {
           const schema = NewSchema;
-          schema.plugin(moongoosePaginate)
+          schema.plugin(moongoosePaginate);
 
-          return schema
-        }
-      }
-    ])
-  ]
+          return schema;
+        },
+      },
+    ]),
+  ],
 })
-export class NewsModule { }
+export class NewsModule {}

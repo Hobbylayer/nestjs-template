@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { PaymentsRequestsService } from './payments-requests.service';
 import { CreatePaymentsRequestDto } from './dto/create-payments-request.dto';
 import { UpdatePaymentsRequestDto } from './dto/update-payments-request.dto';
@@ -7,7 +16,9 @@ import { QueryParamsPaymentRequestDto } from './dto/query-params-payments-reques
 
 @Controller('payments-requests')
 export class PaymentsRequestsController {
-  constructor(private readonly paymentsRequestsService: PaymentsRequestsService) { }
+  constructor(
+    private readonly paymentsRequestsService: PaymentsRequestsService,
+  ) {}
 
   @Post()
   create(@Body() createPaymentsRequestDto: CreatePaymentsRequestDto) {
@@ -17,7 +28,7 @@ export class PaymentsRequestsController {
   @Get('community/:id')
   findAllByCommunity(
     @Param('id', ParseMongoIdPipe) id: string,
-    @Query() queryParams: QueryParamsPaymentRequestDto
+    @Query() queryParams: QueryParamsPaymentRequestDto,
   ) {
     return this.paymentsRequestsService.findAllByCommunity(id, queryParams);
   }
@@ -30,7 +41,7 @@ export class PaymentsRequestsController {
   @Patch(':id')
   update(
     @Param('id', ParseMongoIdPipe) id: string,
-    @Body() updatePaymentsRequestDto: UpdatePaymentsRequestDto
+    @Body() updatePaymentsRequestDto: UpdatePaymentsRequestDto,
   ) {
     return this.paymentsRequestsService.update(id, updatePaymentsRequestDto);
   }

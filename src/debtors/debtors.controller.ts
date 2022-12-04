@@ -6,12 +6,13 @@ import { DebtorsService } from './debtors.service';
 
 @Controller('debtors')
 export class DebtorsController {
-  constructor (
-    private readonly debtorsService: DebtorsService
-  ) { }
+  constructor(private readonly debtorsService: DebtorsService) {}
 
   @Get(':id')
-  getDebtorsByCommunity(@Param('id', ParseMongoIdPipe) id: Types.ObjectId, @Query() paginationDto: PaginationDto) {
+  getDebtorsByCommunity(
+    @Param('id', ParseMongoIdPipe) id: Types.ObjectId,
+    @Query() paginationDto: PaginationDto,
+  ) {
     return this.debtorsService.findByCommunity(id, paginationDto);
   }
 }

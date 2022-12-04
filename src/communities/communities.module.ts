@@ -3,7 +3,7 @@ import { CommunitiesService } from './communities.service';
 import { CommunitiesController } from './communities.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Community, CommunitySchema } from './entities/community.entity';
-import * as mongoosePaginate from 'mongoose-paginate-v2'
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 @Module({
   controllers: [CommunitiesController],
@@ -13,12 +13,12 @@ import * as mongoosePaginate from 'mongoose-paginate-v2'
       {
         name: Community.name,
         useFactory: () => {
-          const schema = CommunitySchema
-          schema.plugin(mongoosePaginate)
-          return schema
-        }
-      }
-    ])
-  ]
+          const schema = CommunitySchema;
+          schema.plugin(mongoosePaginate);
+          return schema;
+        },
+      },
+    ]),
+  ],
 })
-export class CommunitiesModule { }
+export class CommunitiesModule {}
