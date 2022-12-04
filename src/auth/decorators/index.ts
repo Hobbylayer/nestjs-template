@@ -1,1 +1,1 @@
-export { Auth } from './auth.decorator'
+export { Auth } from './auth.decorator';

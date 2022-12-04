@@ -12,10 +12,10 @@ import { Payment, PaymentsSchema } from '../payments/entities/payment.entity';
       {
         name: Payment.name,
         useFactory: () => {
-          return PaymentsSchema
-        }
-      }
-    ])
-  ]
+          return PaymentsSchema;
+        },
+      },
+    ]),
+  ],
 })
 export class ReportsModule {}

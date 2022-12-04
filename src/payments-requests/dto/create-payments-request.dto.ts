@@ -1,28 +1,34 @@
-import { IsArray, IsEnum, IsMongoId, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator'
-import { PaymentConcept } from 'src/common/enums/common.enums'
-import { StatusPaymentRequest } from '../enums/payment-reques.enums'
-
+import {
+  IsArray,
+  IsEnum,
+  IsMongoId,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+} from 'class-validator';
+import { PaymentConcept } from 'src/common/enums/common.enums';
+import { StatusPaymentRequest } from '../enums/payment-reques.enums';
 
 export class CreatePaymentsRequestDto {
+  @IsString()
+  readonly description: string;
 
-    @IsString()
-    readonly description: string
+  @IsString()
+  @IsEnum(PaymentConcept)
+  readonly concept: PaymentConcept;
+  @IsMongoId()
+  readonly community: string;
 
-    @IsString()
-    @IsEnum(PaymentConcept)
-    readonly concept: PaymentConcept
-    @IsMongoId()
-    readonly community: string
+  @IsNumber()
+  @IsPositive()
+  readonly amount: number;
 
-    @IsNumber()
-    @IsPositive()
-    readonly amount: number
+  @IsString()
+  readonly currency: string;
 
-    @IsString()
-    readonly currency: string
-
-    @IsEnum(StatusPaymentRequest)
-    @IsString()
-    @IsOptional()
-    readonly status: StatusPaymentRequest
+  @IsEnum(StatusPaymentRequest)
+  @IsString()
+  @IsOptional()
+  readonly status: StatusPaymentRequest;
 }

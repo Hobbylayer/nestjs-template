@@ -1,4 +1,4 @@
 export enum StatusCommunity {
-    active = 'active',
-    inactive = 'inactive',
+  active = 'active',
+  inactive = 'inactive',
 }

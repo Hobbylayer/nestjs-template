@@ -23,15 +23,13 @@ import { PassportModule } from '@nestjs/passport';
       {
         name: User.name,
         useFactory: () => {
-          const schema = UserSchema
-          schema.plugin(mongoosePaginate)
-          return schema
-        }
-      }
-    ])
+          const schema = UserSchema;
+          schema.plugin(mongoosePaginate);
+          return schema;
+        },
+      },
+    ]),
   ],
-  exports: [
-    UsersService
-  ]
+  exports: [UsersService],
 })
-export class UsersModule { }
+export class UsersModule {}

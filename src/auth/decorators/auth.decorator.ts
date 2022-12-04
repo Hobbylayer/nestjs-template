@@ -5,8 +5,8 @@ import { UserRoleGuard } from '../guards/user-role.guard';
 import { RolesProtected } from './roles-protected.decorator';
 
 export const Auth = (...roles: ValidRoles[]) => {
-    return applyDecorators(
-        RolesProtected(...roles),
-        UseGuards(AuthGuard(), UserRoleGuard),
-    )
-}
+  return applyDecorators(
+    RolesProtected(...roles),
+    UseGuards(AuthGuard(), UserRoleGuard),
+  );
+};

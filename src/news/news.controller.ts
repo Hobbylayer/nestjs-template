@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { NewsService } from './news.service';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
@@ -7,7 +16,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('news')
 export class NewsController {
-  constructor(private readonly newsService: NewsService) { }
+  constructor(private readonly newsService: NewsService) {}
 
   @Post()
   create(@Body() createNewsDto: CreateNewsDto) {
@@ -17,7 +26,7 @@ export class NewsController {
   @Get('community/:communityId')
   findByCommunity(
     @Param('communityId', ParseMongoIdPipe) communityId,
-    @Query() paginationDto: PaginationDto
+    @Query() paginationDto: PaginationDto,
   ) {
     return this.newsService.findByCommunity(communityId, paginationDto);
   }
@@ -30,7 +39,7 @@ export class NewsController {
   @Patch(':id')
   update(
     @Param('id', ParseMongoIdPipe) id: string,
-    @Body() updateNewsDto: UpdateNewsDto
+    @Body() updateNewsDto: UpdateNewsDto,
   ) {
     return this.newsService.update(id, updateNewsDto);
   }
@@ -41,16 +50,12 @@ export class NewsController {
   }
 
   @Patch('activate/:id')
-  activate(
-    @Param('id') id: string,
-  ) {
-    return this.activate(id)
+  activate(@Param('id') id: string) {
+    return this.activate(id);
   }
 
   @Patch('inactivate/:id')
-  inactivate(
-    @Param('id') id: string,
-  ) {
-    return this.inactivate(id)
+  inactivate(@Param('id') id: string) {
+    return this.inactivate(id);
   }
 }

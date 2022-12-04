@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { QuestbookService } from './questbook.service';
 import { CreateQuestbookDto } from './dto/create-questbook.dto';
 import { UpdateQuestbookDto } from './dto/update-questbook.dto';
@@ -23,7 +31,10 @@ export class QuestbookController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuestbookDto: UpdateQuestbookDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateQuestbookDto: UpdateQuestbookDto,
+  ) {
     return this.questbookService.update(+id, updateQuestbookDto);
   }
 

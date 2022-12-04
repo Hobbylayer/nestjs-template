@@ -1,4 +1,4 @@
 export enum LocationsStatus {
-    ACTIVE = 'active',
-    DISABLED = 'disabled',
+  ACTIVE = 'active',
+  DISABLED = 'disabled',
 }

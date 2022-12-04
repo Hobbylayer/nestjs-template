@@ -4,7 +4,7 @@ import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 
 @Controller('reports')
 export class ReportsController {
-  constructor(private readonly reportsService: ReportsService) { }
+  constructor(private readonly reportsService: ReportsService) {}
 
   @Get('location/:id/debt')
   totalDebtsByLocation(@Param('id', ParseMongoIdPipe) id: string) {
@@ -17,9 +17,7 @@ export class ReportsController {
   }
 
   @Get('income/:id')
-  totalIncomeByDate(
-    @Param(':id', ParseMongoIdPipe) id: string,
-  ) {
+  totalIncomeByDate(@Param(':id', ParseMongoIdPipe) id: string) {
     return this.reportsService.totalIncomeByDate(id);
   }
 
@@ -27,18 +25,14 @@ export class ReportsController {
   remove(@Param('id') id: string) {
     return this.reportsService.remove(id);
   }
-  
+
   @Get('community-earnings/:communityId')
-  earningsByCommunity(
-    @Param('communityId', ParseMongoIdPipe) id: string
-  ) {
-    return this.reportsService.earningsByCommunity(id)
+  earningsByCommunity(@Param('communityId', ParseMongoIdPipe) id: string) {
+    return this.reportsService.earningsByCommunity(id);
   }
 
   @Get('community-earnings/by-bank/:bankId')
-  earningsByBank(
-    @Param('bankId', ParseMongoIdPipe) id: string
-  ) {
+  earningsByBank(@Param('bankId', ParseMongoIdPipe) id: string) {
     return this.reportsService.earningsByBank(id);
   }
 }
