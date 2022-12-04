@@ -60,6 +60,7 @@ export class PaymentsService {
       page = 1,
       sort = 'ASC',
       location,
+      resident,
       payment_status: status,
       number,
       includeAllField = false,
@@ -100,6 +101,7 @@ export class PaymentsService {
 
     const payments = await this.paymentModel.paginate({
       community: id,
+      ...(resident ? { resident }: {}),
       ...(kind ? { kind } : {}),
       ...(number ? { number } : {}),
       ...(location ? { location } : {}),

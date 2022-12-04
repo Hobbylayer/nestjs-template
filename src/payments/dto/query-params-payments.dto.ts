@@ -13,6 +13,10 @@ export class QueryParamsPayments extends PaginationDto {
 
     @IsMongoId()
     @IsOptional()
+    resident: string
+
+    @IsMongoId()
+    @IsOptional()
     location: string
 
     @IsEnum(PaymentStatus)
