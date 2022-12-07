@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { Types } from 'mongoose';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaymentStatus } from '../enums/enums.payments';
 
@@ -62,4 +63,8 @@ export class QueryParamsPayments extends PaginationDto {
     @IsISO8601()
     @IsOptional()
     endDate?: string
+
+    @IsMongoId()
+    @IsOptional()
+    residentId: Types.ObjectId
 }

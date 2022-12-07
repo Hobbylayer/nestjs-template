@@ -72,6 +72,7 @@ export class PaymentsService {
       startDate,
       endDate,
       findDateBy,
+      residentId
     } = queryParams;
 
     const findByCreateAt = () => {
@@ -109,14 +110,10 @@ export class PaymentsService {
       ...(description ? { description: new RegExp(description, 'i') } : {}),
       ...(findDateBy ? {
         ...findDateByDateRange(findDateBy)
-      } : {})
-    }, {
-      limit,
-      page,
-      sort: {
-        createdAt: sort.toLocaleUpperCase()
-
-      },
+      } : {}
+      ),
+      ...(residentId && { resident: residentId })
+    },
       {
         limit,
         page,
