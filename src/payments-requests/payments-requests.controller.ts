@@ -18,11 +18,14 @@ import { QueryParamsPaymentRequestDto } from './dto/query-params-payments-reques
 export class PaymentsRequestsController {
   constructor(
     private readonly paymentsRequestsService: PaymentsRequestsService,
-  ) {}
+  ) { }
 
   @Post()
-  create(@Body() createPaymentsRequestDto: CreatePaymentsRequestDto) {
-    return this.paymentsRequestsService.create(createPaymentsRequestDto);
+  create(
+    @Body() createPaymentsRequestDto: CreatePaymentsRequestDto,
+    @Query() queryParams: QueryParamsPaymentRequestDto,
+  ) {
+    return this.paymentsRequestsService.create(createPaymentsRequestDto, queryParams);
   }
 
   @Get('community/:id')

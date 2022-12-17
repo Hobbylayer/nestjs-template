@@ -31,4 +31,11 @@ export class CreatePaymentsRequestDto {
   @IsString()
   @IsOptional()
   readonly status: StatusPaymentRequest;
+
+
+  @IsArray()
+  @IsMongoId({ each: true })
+  @IsOptional()
+  readonly locations: string[];
+
 }

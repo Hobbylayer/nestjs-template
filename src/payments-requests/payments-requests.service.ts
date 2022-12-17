@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, Types } from 'mongoose';
 import { STATUS_DOCUMENT } from 'src/common/enums/common.enums';
@@ -21,20 +21,30 @@ export class PaymentsRequestsService {
     readonly paymentModel: PaginateModel<Payment>,
     @InjectModel(Location.name)
     readonly locationModel: PaginateModel<Location>,
-  ) {}
+  ) { }
 
-  async create(createPaymentsRequestDto: CreatePaymentsRequestDto) {
-    const { community } = createPaymentsRequestDto;
+  async create(createPaymentsRequestDto: CreatePaymentsRequestDto, queryParams: QueryParamsPaymentRequestDto) {
+    const { community, locations } = createPaymentsRequestDto;
+    const { all_locations = false } = queryParams
 
-    let locations = await this.locationModel
-      .find({ community, status: STATUS_DOCUMENT.ACTIVE })
-      .select('_id name');
-    locations = locations.map(({ _id }) => _id);
 
-    return await this.paymentRequestModel.create({
-      ...createPaymentsRequestDto,
-      debts: locations,
-    });
+    if (all_locations) {
+      let locations = await this.locationModel
+        .find({ community, status: STATUS_DOCUMENT.ACTIVE })
+        .select('_id name');
+      locations = locations.map(({ _id }) => _id);
+
+      return await this.paymentRequestModel.create({
+        ...createPaymentsRequestDto,
+        debts: locations,
+      });
+    }
+
+    const locationsVerified = locations.map(item => this.existLocation(item))
+    const locationsVerifiedResult = await Promise.all(locationsVerified)
+    if (locationsVerifiedResult.includes(false)) new BadRequestException('One or more locations does not exist')
+
+    return await this.paymentRequestModel.create(createPaymentsRequestDto);
   }
 
   async findAllByCommunity(
@@ -133,5 +143,10 @@ export class PaymentsRequestsService {
       },
     });
     return paymentsRequest;
+  }
+  async existLocation(locationId) {
+    const location = await this.locationModel.findById(locationId);
+
+    return Boolean(location)
   }
 }

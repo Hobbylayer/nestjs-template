@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEnum,
   IsMongoId,
   IsNumber,
@@ -26,4 +27,8 @@ export class QueryParamsPaymentRequestDto extends PaginationDto {
   @IsNumber()
   @IsPositive()
   readonly amount: number;
+
+  @IsOptional()
+  @IsBoolean()
+  readonly all_locations: boolean
 }
