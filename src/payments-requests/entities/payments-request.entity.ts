@@ -33,7 +33,7 @@ export class PaymentsRequest extends Document {
   @Prop({ type: String, default: 'open' })
   status: string;
 
-  @Prop({ type: Types.Array<Types.ObjectId>, ref: 'Location' })
+  @Prop({ type: Types.Array<Types.ObjectId>, ref: 'Location', required: true })
   debts: Types.ObjectId[];
 
   @Prop({
