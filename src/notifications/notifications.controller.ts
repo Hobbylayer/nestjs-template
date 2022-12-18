@@ -6,18 +6,23 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
+import { QueryParamsNotifications } from './dto/query-params-notifications';
 
 @Controller('notifications')
 export class NotificationsController {
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(private readonly notificationsService: NotificationsService) { }
 
   @Post()
-  create(@Body() createNotificationDto: CreateNotificationDto) {
-    return this.notificationsService.create(createNotificationDto);
+  create(
+    @Body() createNotificationDto: CreateNotificationDto,
+    @Query() queryParams: QueryParamsNotifications
+  ) {
+    return this.notificationsService.create(createNotificationDto, queryParams);
   }
 
   @Get()
@@ -27,7 +32,7 @@ export class NotificationsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.notificationsService.findOne(+id);
+    return this.notificationsService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +40,11 @@ export class NotificationsController {
     @Param('id') id: string,
     @Body() updateNotificationDto: UpdateNotificationDto,
   ) {
-    return this.notificationsService.update(+id, updateNotificationDto);
+    return this.notificationsService.update(id, updateNotificationDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.notificationsService.remove(+id);
+    return this.notificationsService.remove(id);
   }
 }

@@ -23,7 +23,7 @@ export class PaymentsService {
     readonly paymentModel: PaginateModel<Payment>,
     @InjectModel(PaymentsRequest.name)
     readonly paymentRequestModel: Model<PaymentsRequest>,
-  ) {}
+  ) { }
 
   async create(createPaymentDto: CreatePaymentDto) {
     const { community, kind, paymethod } = createPaymentDto;
@@ -72,7 +72,8 @@ export class PaymentsService {
       startDate,
       endDate,
       findDateBy,
-      residentId
+      residentId,
+      referenceCode
     } = queryParams;
 
     const findByCreateAt = () => {
@@ -102,12 +103,13 @@ export class PaymentsService {
     };
     const payments = await this.paymentModel.paginate({
       community: id,
-      ...(resident ? { resident }: {}),
+      ...(resident ? { resident } : {}),
       ...(kind ? { kind } : {}),
       ...(number ? { number } : {}),
       ...(location ? { location } : {}),
       ...(status ? { status } : {}),
-      ...(description ? { description: new RegExp(description, 'i') } : {}),
+      ...(Boolean(referenceCode) && { referenceCode }),
+      ...(Boolean(description)? { description: new RegExp(description, 'i') } : {}),
       ...(findDateBy ? {
         ...findDateByDateRange(findDateBy)
       } : {}
@@ -123,15 +125,15 @@ export class PaymentsService {
         ...(includeAllField
           ? {}
           : {
-              select: 'date number kind amount referenceCode status' + fields,
-            }),
+            select: 'date number kind amount referenceCode status' + fields,
+          }),
         ...(fields
           ? {
-              populate: {
-                path: fields.replace(',', ' '),
-                select: 'name dni email phone',
-              },
-            }
+            populate: {
+              path: fields.replace(',', ' '),
+              select: 'name dni email phone',
+            },
+          }
           : {}),
       },
     );

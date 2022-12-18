@@ -68,4 +68,8 @@ export class QueryParamsPayments extends PaginationDto {
   @IsMongoId()
   @IsOptional()
   residentId: Types.ObjectId
+
+  @IsString()
+  @IsOptional()
+  referenceCode: string
 }
