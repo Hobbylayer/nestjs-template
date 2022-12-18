@@ -31,5 +31,6 @@ export class QueryParamsPaymentRequestDto extends PaginationDto {
 
 
   @IsString()
-  fields: string;
+  @IsOptional()
+  readonly fields?: string;
 }

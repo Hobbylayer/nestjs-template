@@ -33,7 +33,6 @@ export class QueryParamsPayments extends PaginationDto {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === 'true')
   includeAllField: boolean
 
 
