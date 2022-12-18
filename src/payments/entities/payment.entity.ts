@@ -25,7 +25,7 @@ export class Payment extends Document {
   })
   paymethod: Paymethod;
 
-  @Prop({ type: String })
+  @Prop({ type: String, default: null })
   description: string;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: false }) // required only income payment
