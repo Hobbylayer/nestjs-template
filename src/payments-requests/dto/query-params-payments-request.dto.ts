@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsEnum,
@@ -28,7 +29,7 @@ export class QueryParamsPaymentRequestDto extends PaginationDto {
   @IsPositive()
   readonly amount: number;
 
-  @IsOptional()
-  @IsBoolean()
-  readonly all_locations: boolean
+
+  @IsString()
+  fields: string;
 }

@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsEnum,
@@ -17,54 +18,55 @@ export enum DateSearchType {
 }
 
 export class QueryParamsPayments extends PaginationDto {
-    @IsMongoId()
-    @IsOptional()
-    resident: string
+  @IsMongoId()
+  @IsOptional()
+  resident: string
 
-    @IsMongoId()
-    @IsOptional()
-    location: string
+  @IsMongoId()
+  @IsOptional()
+  location: string
 
-    @IsEnum(PaymentStatus)
-    @IsString()
-    @IsOptional()
-    payment_status: PaymentStatus
+  @IsEnum(PaymentStatus)
+  @IsString()
+  @IsOptional()
+  payment_status: PaymentStatus
 
-    @IsBoolean()
-    @IsOptional()
-    includeAllField: boolean
-
-
-    @IsString()
-    @IsOptional()
-    fields: string
-
-    @IsString()
-    @IsOptional()
-    kind: PaymentKind
-
-    @IsString()
-    @IsOptional()
-    number: string
-
-    @IsString()
-    @IsOptional()
-    description?: string
-
-    @IsEnum(DateSearchType)
-    @IsOptional()
-    findDateBy?: DateSearchType
-
-    @IsISO8601()
-    @IsOptional()
-    startDate?: string
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === 'true')
+  includeAllField: boolean
 
 
-    @IsISO8601()
-    @IsOptional()
-    endDate?: string
+  @IsString()
+  @IsOptional()
+  fields: string
 
-    @IsMongoId()
-    @IsOptional()
-    residentId: Types.ObjectId
+  @IsString()
+  @IsOptional()
+  kind: PaymentKind
+
+  @IsString()
+  @IsOptional()
+  number: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsEnum(DateSearchType)
+  @IsOptional()
+  findDateBy?: DateSearchType
+
+  @IsISO8601()
+  @IsOptional()
+  startDate?: string
+
+
+  @IsISO8601()
+  @IsOptional()
+  endDate?: string
+
+  @IsMongoId()
+  @IsOptional()
+  residentId: Types.ObjectId
 }

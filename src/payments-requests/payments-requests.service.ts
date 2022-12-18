@@ -25,26 +25,34 @@ export class PaymentsRequestsService {
 
   async create(createPaymentsRequestDto: CreatePaymentsRequestDto, queryParams: QueryParamsPaymentRequestDto) {
     const { community, locations } = createPaymentsRequestDto;
-    const { all_locations = false } = queryParams
-
+    const all_locations = queryParams.fields.includes('all_locations')
+    console.log(all_locations)
 
     if (all_locations) {
-      let locations = await this.locationModel
+      console.log(all_locations)
+      if (Boolean(locations)) throw new BadRequestException('You can not select locations if you select all locations')
+
+      let communityLocations = await this.locationModel
         .find({ community, status: STATUS_DOCUMENT.ACTIVE })
         .select('_id name');
-      locations = locations.map(({ _id }) => _id);
+      communityLocations = communityLocations.map(({ _id }) => _id);
 
       return await this.paymentRequestModel.create({
         ...createPaymentsRequestDto,
-        debts: locations,
+        debts: communityLocations,
       });
     }
+
+    if (!all_locations && locations.length === 0) throw new BadRequestException('You must select at least one location')
 
     const locationsVerified = locations.map(item => this.existLocation(item))
     const locationsVerifiedResult = await Promise.all(locationsVerified)
     if (locationsVerifiedResult.includes(false)) new BadRequestException('One or more locations does not exist')
 
-    return await this.paymentRequestModel.create(createPaymentsRequestDto);
+    return await this.paymentRequestModel.create({
+      ...createPaymentsRequestDto,
+      debts: createPaymentsRequestDto.locations
+    });
   }
 
   async findAllByCommunity(
@@ -145,8 +153,7 @@ export class PaymentsRequestsService {
     return paymentsRequest;
   }
   async existLocation(locationId) {
-    const location = await this.locationModel.findById(locationId);
-
+    const location = await this.locationModel.findById(locationId, { status: STATUS_DOCUMENT.ACTIVE }).count()
     return Boolean(location)
   }
 }
