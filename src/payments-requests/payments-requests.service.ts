@@ -25,11 +25,9 @@ export class PaymentsRequestsService {
 
   async create(createPaymentsRequestDto: CreatePaymentsRequestDto, queryParams: QueryParamsPaymentRequestDto) {
     const { community, locations } = createPaymentsRequestDto;
-    const all_locations = queryParams.fields.includes('all_locations')
-    console.log(all_locations)
+    const all_locations = queryParams?.fields?.includes('all_locations')
 
     if (all_locations) {
-      console.log(all_locations)
       if (Boolean(locations)) throw new BadRequestException('You can not select locations if you select all locations')
 
       let communityLocations = await this.locationModel
@@ -51,7 +49,7 @@ export class PaymentsRequestsService {
 
     return await this.paymentRequestModel.create({
       ...createPaymentsRequestDto,
-      debts: createPaymentsRequestDto.locations
+      debts: createPaymentsRequestDto.locations.map(item => new Types.ObjectId(item))
     });
   }
 
