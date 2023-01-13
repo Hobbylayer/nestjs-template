@@ -52,3 +52,4 @@ de crear transacciones, los calculos de las conversiones de monedas a moneda pri
     grafico como tal, simplemente se realizaran las inserciones, eliminaciones y demas usando postman. A la hora de registrar la transaccion
     se debe mostrar el campo de moneda (puede ser representado con un select), el mismo formulario se encargara de enviar la data al backend
     de manera que el mismo realize las verificaciones anteriormente mencionadas.
+    Al momento de crear un income o un expense verificar que la moneda del pago sea igual a la moneda del banco que se elegiio 
