@@ -16,26 +16,20 @@ export class User extends Document {
   @Prop({ unique: true })
   email: string;
 
-  @Prop({ type: String, unique: true })
-  dni: string;
-
   @Prop({ select: false })
   password: string;
 
   @Prop({ type: String, enum: UserStatus, default: UserStatus.ACTIVE })
   status: UserStatus;
 
-  @Prop({ type: Array, enum: Roles, default: Roles.RESIDENT })
+  @Prop({ type: Array, enum: Roles, default: Roles.ADMIN })
   roles: Roles[];
 
   @Prop()
   urlAvatar: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'Community', index: true })
-  community: Types.ObjectId;
-
-  @Prop({ type: Types.ObjectId, ref: 'Location' })
-  location: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'Company', index: true })
+  company: Types.ObjectId;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

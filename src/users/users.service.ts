@@ -9,7 +9,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Roles, UserStatus } from './enums/users.enums';
 import { UsersQueryOptionsDto } from './dto/query-options.dto';
 
@@ -20,12 +19,12 @@ export class UsersService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: PaginateModel<User>,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
-    const { location, roles } = createUserDto;
+    const { roles } = createUserDto;
 
-    if (!location && roles.includes(Roles.RESIDENT)) {
+    if (!location && roles.includes(Roles.ADMIN)) {
       throw new BadRequestException('Locations is required for resident role');
     }
 
@@ -46,10 +45,7 @@ export class UsersService {
     return {
       message: 'User created successfully',
       user: {
-        _id: newUser._id,
-        dni: newUser.dni,
-        name: newUser.name,
-        last_name: newUser.lastName,
+        ...newUser
       },
     };
   }
@@ -57,21 +53,7 @@ export class UsersService {
   findAll() {
     return `This action returns all users`;
   }
-  async totalResident(communityId: string) {
-    const total = await this.userModel
-      .find({
-        community: communityId,
-        status: UserStatus.ACTIVE,
-        location: {
-          $exists: true,
-        },
-      })
-      .count();
-
-    return { total };
-  }
-
-  async findAllByCommunityId(
+  async findAllByCompanyId(
     id: string,
     queryOptionsDto: UsersQueryOptionsDto,
   ) {
@@ -95,11 +77,11 @@ export class UsersService {
         select: '-__v',
         ...(includeLocation
           ? {
-              populate: {
-                path: 'location',
-                select: 'name _id',
-              },
-            }
+            populate: {
+              path: 'location',
+              select: 'name _id',
+            },
+          }
           : {}),
       },
     );
@@ -170,13 +152,11 @@ export class UsersService {
       lastName: result.lastName,
       phone: result.phone,
       email: result.email,
-      dni: result.dni,
       roles: result.roles,
     };
     return {
       user,
-      community: result.community,
-      location: result.location,
+      company: result.company,
     };
   }
 }

@@ -54,9 +54,5 @@ export class CreateUserDto {
   readonly urlAvatar: string;
 
   @IsMongoId()
-  readonly community: Types.ObjectId;
-
-  @IsMongoId()
-  @IsOptional()
-  readonly location?: Types.ObjectId;
+  readonly company: Types.ObjectId;
 }

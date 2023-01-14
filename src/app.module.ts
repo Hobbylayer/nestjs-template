@@ -9,20 +9,9 @@ import { NoSqlService } from './configurations/database/no-sql/no-sql.service';
 import { ApplicationModule } from './configurations/application/application.module';
 import { ApplicationService } from './configurations/application/application.service';
 import { UsersModule } from './users/users.module';
-import { CommunitiesModule } from './communities/communities.module';
-import { PaymentsModule } from './payments/payments.module';
-import { LocationModule } from './location/location.module';
-import { PaymentsRequestsModule } from './payments-requests/payments-requests.module';
-import { NotificationsModule } from './notifications/notifications.module';
-import { QuestbookModule } from './questbook/questbook.module';
-import { VotesModule } from './votes/votes.module';
-import { ReportsModule } from './reports/reports.module';
-import { BanksModule } from './banks/banks.module';
-import { CommonAreasModule } from './common-areas/common-areas.module';
-import { DebtorsModule } from './debtors/debtors.module';
+import { CompaniesModule } from './companies/company.module';
 import { AuthModule } from './auth/auth.module';
-import { NewsModule } from './news/news.module';
-import { PaymethodsModule } from './paymethods/paymethods.module';
+
 
 @Module({
   imports: [
@@ -42,22 +31,11 @@ import { PaymethodsModule } from './paymethods/paymethods.module';
       inject: [ApplicationService],
     }),
     UsersModule,
-    CommunitiesModule,
-    PaymentsModule,
-    LocationModule,
-    PaymentsRequestsModule,
-    NotificationsModule,
-    QuestbookModule,
-    VotesModule,
-    ReportsModule,
-    BanksModule,
-    CommonAreasModule,
-    DebtorsModule,
+    CompaniesModule,
     AuthModule,
-    NewsModule,
-    PaymethodsModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
