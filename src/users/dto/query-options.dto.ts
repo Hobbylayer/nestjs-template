@@ -14,5 +14,5 @@ export class UsersQueryOptionsDto extends PaginationDto {
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => value === 'true')
-  readonly includeLocation?: boolean;
+  readonly includeCompany?: boolean;
 }

@@ -1,15 +1,13 @@
 import {
   IsEmail,
   IsEnum,
-  IsNumber,
   IsOptional,
   IsPhoneNumber,
   IsString,
   MaxLength,
-  Min,
   MinLength,
 } from 'class-validator';
-import { StatusCommunity } from '../enums/communities.enums';
+import { StatusCompany } from '../enums/company.enums';
 
 export class CreateCompanyDto {
   @IsString()
@@ -37,20 +35,11 @@ export class CreateCompanyDto {
   @IsOptional()
   rif: string;
 
-  @IsNumber()
-  @IsOptional()
-  @Min(1)
-  exchangeRate: number;
-
-  @IsString()
-  @IsOptional()
-  currency: string;
-
   @IsEmail()
   owner: string;
 
   @IsString()
   @IsOptional()
-  @IsEnum(StatusCommunity)
-  active: StatusCommunity;
+  @IsEnum(StatusCompany)
+  active: StatusCompany;
 }

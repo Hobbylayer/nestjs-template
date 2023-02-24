@@ -7,7 +7,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company } from './entities/company.entity';
 
 @Injectable()
-export class CommunitiesService {
+export class CompanyService {
   constructor(
     @InjectModel(Company.name)
     private readonly communityModel: PaginateModel<Company>,
@@ -17,8 +17,8 @@ export class CommunitiesService {
     const exist = await this.existEmail(createCompanyDto.email);
     if (exist)
       return new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
-    const totalCommunities = await this.communityModel.find({}).count();
-    const code = this.createCode(totalCommunities);
+    const totalCompanies = await this.communityModel.find({}).count();
+    const code = this.createCode(totalCompanies);
     const data = await this.communityModel.create({
       code,
       ...createCompanyDto,

@@ -9,7 +9,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { Roles, UserStatus } from './enums/users.enums';
+import {  UserStatus } from './enums/users.enums';
 import { UsersQueryOptionsDto } from './dto/query-options.dto';
 
 @Injectable()
@@ -22,11 +22,6 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    const { roles } = createUserDto;
-
-    if (!location && roles.includes(Roles.ADMIN)) {
-      throw new BadRequestException('Locations is required for resident role');
-    }
 
     const emailAndDniExist = await this.userModel.findOne({
       $or: [{ email: createUserDto.email }, { dni: createUserDto.dni }],
@@ -62,7 +57,7 @@ export class UsersService {
       page = 1,
       name,
       dni,
-      includeLocation = false,
+      includeCompany = false,
     } = queryOptionsDto;
 
     return await this.userModel.paginate(
@@ -75,7 +70,7 @@ export class UsersService {
         limit,
         page,
         select: '-__v',
-        ...(includeLocation
+        ...(includeCompany
           ? {
             populate: {
               path: 'location',
@@ -145,7 +140,7 @@ export class UsersService {
   async self(id: string) {
     const result = await this.userModel
       .findById(id)
-      .populate('community location');
+      .populate('company');
     const user = {
       _id: result._id,
       name: result.name,

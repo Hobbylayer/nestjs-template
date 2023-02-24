@@ -26,7 +26,7 @@ export class AuthService {
       this.notValidCredencials();
     return {
       message: 'User authenticated',
-      token: this.getJwt({ _id: user._id, roles: user.roles }),
+      token: this.getJwt({ _id: user._id, roles: user.roles, companyId: user.company }),
     };
   }
 
